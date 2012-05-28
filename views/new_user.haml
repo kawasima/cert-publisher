@@ -1,0 +1,50 @@
+%div.well
+  発行するメールアドレスを入力してください。
+
+%form.form-horizontal{ :method => 'post', :action => '/new_user' }
+  %fieldset
+    %div.control-group
+      %label.control-label{ :for => 'country-name' }= t.field.country_name
+      %div.controls.docs-input-sizes
+        %input#country-name{ :type =>'text', :name => 'user[country_name]', :value => @user.country_name }
+        - if @user.errors[:country_name]
+          %span.help-inline= @user.errors[:country_name]
+    %div.control-group
+      %label.control-label{ :for => 'privince-name' }= t.field.province_name
+      %div.controls.doc-input-sizes
+        %input#province-name{ :type =>'text', :name => 'user[province_name]', :value => @user.province_name }
+        - if @user.errors[:province_name]
+          %span.help-inline= @user.errors[:province_name]
+    %div.control-group
+      %label.control-label{ :for => 'locality-name' }= t.field.locality_name
+      %div.controls.doc-input-sizes
+        %input#locality-name{ :type =>'text', :name => 'user[locality_name]', :value => @user.locality_name }
+        - if @user.errors[:locality_name]
+          %span.help-inline= @user.errors[:locality_name]
+    %div.control-group
+      %label.control-label{ :for => 'organization-name' }= t.field.organization_name
+      %div.controls.doc-input-sizes
+        %input#organization-name{ :type =>'text', :name => 'user[organization_name]', :value => @user.organization_name }
+        - if @user.errors[:organization_name]
+          %span.help-inline= @user.errors[:organization_name]
+    %div.control-group
+      %label.control-label{ :for => 'organization-unit-name' }= t.field.organization_unit_name
+      %div.controls.doc-input-sizes
+        %input#organization-unit-name{ :type =>'text', :name => 'user[organization_unit_name]', :value => @user.organization_unit_name }
+        - if @user.errors[:organization_unit_name]
+          %span.help-inline= @user.errors[:organization_unit_name]
+    %div.control-group
+      %label.control-label{ :for => 'common-name' }= t.field.common_name
+      %div.controls.doc-input-sizes
+        %input#common-name{ :type =>'text', :name => 'user[common_name]', :value => @user.common_name }
+        - if @user.errors[:common_name]
+          %span.help-inline= @user.errors[:common_name]
+    %div.control-group
+      %label.control-label{ :for => 'email-address' }= t.field.email_address
+      %div.controls.doc-input-sizes
+        %input#email-address{ :type =>'text', :name => 'user[email_address]', :value => @user.email_address }
+        - if @user.errors[:emain_address]
+          %span.help-inline= @user.errors[:emain_address]
+  %div.form-actions
+    %button.btn.btn-primary{ :type => 'submit' }= t.button.register
+    

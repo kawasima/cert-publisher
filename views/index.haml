@@ -1,0 +1,22 @@
+%h1 List of Users
+
+- if flash[:notice]
+  .alert.alert-success= flash[:notice]
+
+- if flash[:error]
+  .alert.alert-error= flash[:error]
+  
+%table.table
+  %tr
+    %th= t.field.email_address
+    %th 
+  - @users.each do |user|
+    %tr
+      %td= user.email_address
+      %td
+        %a.btn.btn-danger{ :href => "destroy/#{user.id}" }= t.button.delete
+        %a.btn.btn-danger{ :href => "revoke/#{user.id}" }= t.button.revoke
+
+%div.pagination= @users.pager.to_html "/", :size => 5        
+
+%a.btn.btn-primary{ :href => 'new_user' }= t.button.new_user

@@ -1,0 +1,20 @@
+field:
+  country_name: 国名
+  province_name: 都道府県
+  locality_name: 市区郡
+  organization_name: 会社名
+  organization_unit_name: 部署名
+  common_name: ドメイン
+  email_address: メールアドレス
+button:
+  register: 登録
+  new_user: 新規発行する
+  delete: 削除
+  extend: 延長
+  revoke: 失効
+message:
+  updated: 更新しました
+  deleted: 削除しました
+  failed_to_delete: 削除に失敗しました
+  extended: 有効期限を延長しました
+  revoked: 証明書を失効しました

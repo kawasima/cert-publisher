@@ -1,0 +1,13 @@
+!!!
+%html
+  %head
+    %link{ :rel => 'stylesheet', :href => 'css/bootstrap.min.css' }
+    %script{ :src => 'js/bootstrap.min.js' }
+  %body{ :style => 'padding-top: 90px;' }
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %a.brand{ :href => '/' } Cert Publisher
+    .container
+      =yield
+  
