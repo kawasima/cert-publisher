@@ -9,14 +9,52 @@
 %table.table
   %tr
     %th= t.field.email_address
+    %th= t.field.expires
     %th 
   - @users.each do |user|
-    %tr
-      %td= user.email_address
+    %tr.entry
       %td
-        %a.btn.btn-danger{ :href => "destroy/#{user.id}" }= t.button.delete
-        %a.btn.btn-danger{ :href => "revoke/#{user.id}" }= t.button.revoke
+        %a{ :href => url("/show/#{user.token}", false) }= user.email_address
+      %td= l(user.expires)
+      %td
+        %div.btn-group
+          %a.btn.dropdown-toggle{ :"data-toggle" => "dropdown", :href => "#" }
+            Action
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              %a{ :href => "#dialog-confirm", :"data-toggle" => "modal", :"data-url" => url("/admin/sendmail/#{user.id}", false) }= t.button.sendmail
+            %li
+              %a{ :href => "#dialog-confirm", :"data-toggle" => "modal", :"data-url" => url("/admin/extend/#{user.id}", false) }= t.button.extension
+            %li
+              %a{ :href => "#dialog-confirm", :"data-toggle" => "modal", :"data-url" => url("/admin/destroy/#{user.id}", false)  }= t.button.delete
+            %li
+              %a{ :href => "#dialog-confirm", :"data-toggle" => "modal", :"data-url" => url("/admin/revoke/#{user.id}", false) }= t.button.revoke
 
-%div.pagination= @users.pager.to_html "/", :size => 5        
+.pagination= @users.pager.to_html url('/admin/', false), :size => 5
 
-%a.btn.btn-primary{ :href => 'new_user' }= t.button.new_user
+%a.btn.btn-primary{ :href => url('/admin/new_user', false) }= t.button.new_user
+
+#dialog-confirm.modal.hide
+  .modal-body
+    %p= t.message.confirm_action
+  .modal-footer
+    %form{ :style => "display: inline", :method => "post" }
+      %button#button-ok.btn.btn-danger{ :type => "submit" }= t.button.ok
+    %button#button-cancel.btn= t.button.cancel
+  
+
+:javascript
+  $(document).ready(function() {
+    $("#dialog-confirm").modal({show: false});
+
+    $(".dropdown-menu a[data-toggle=modal]").click(function() {
+      $("#dialog-confirm form").attr("action", $(this).attr("data-url"));
+      $("#dialog-confirm #action-name").html($(this).html());
+    });
+
+    $("#dialog-confirm #button-cancel").click(function() {
+      $("#dialog-confirm").modal('hide');
+      return false;
+    });
+  })

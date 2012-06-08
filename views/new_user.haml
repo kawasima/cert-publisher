@@ -1,7 +1,12 @@
-%div.well
-  発行するメールアドレスを入力してください。
+%div.well= t.message.new_user
 
-%form.form-horizontal{ :method => 'post', :action => '/new_user' }
+- if flash[:notice]
+  .alert.alert-success= flash[:notice]
+
+- if flash[:error]
+  .alert.alert-error= flash[:error]
+
+%form.form-horizontal{ :method => 'post', :action => url('/admin/new_user', false) }
   %fieldset
     %div.control-group
       %label.control-label{ :for => 'country-name' }= t.field.country_name
@@ -45,6 +50,10 @@
         %input#email-address{ :type =>'text', :name => 'user[email_address]', :value => @user.email_address }
         - if @user.errors[:emain_address]
           %span.help-inline= @user.errors[:emain_address]
+    %div.control-group
+      %label.control-label{ :for => 'ca-password' }= t.field.ca_password
+      %div.controls.doc-input-sizes
+        %input#ca-password{ :type => 'password', :name => 'ca_password' }
   %div.form-actions
     %button.btn.btn-primary{ :type => 'submit' }= t.button.register
     

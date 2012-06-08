@@ -1,13 +1,16 @@
 !!!
 %html
   %head
-    %link{ :rel => 'stylesheet', :href => 'css/bootstrap.min.css' }
-    %script{ :src => 'js/bootstrap.min.js' }
+    %meta{ :charset => 'utf-8' }
+    %title Cert Publisher
+    %link{ :rel => 'stylesheet', :href => url('/css/bootstrap.min.css', false) }
+    %script{ :src => url('js/jquery-1.7.2.min.js', false) }
+    %script{ :src => url('js/bootstrap.min.js', false) }
   %body{ :style => 'padding-top: 90px;' }
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
-          %a.brand{ :href => '/' } Cert Publisher
+          %a.brand{ :href => url('/', false) } Cert Publisher
     .container
       =yield
   

@@ -3,18 +3,30 @@ field:
   province_name: Province
   locality_name: Locality
   organization_name: Organization
-  organization_unit_name: Organization Unit
-  common_name: ドメイン
-  email_address: メールアドレス
+  organization_unit_name: Organization unit
+  common_name: Full name
+  email_address: Email address
+  ca_password: Password of CA
+  expires: Expires
+  pkcs12_password: Password of certification
 button:
-  register: 登録
-  new_user: 新規発行する
-  delete: 削除
-  extend: 延長
-  revoke: 失効
+  register: Register
+  new_user: Create user
+  sendmail: Send URL
+  delete: Delete
+  extend: Extend
+  revoke: Revoke
+  download: Download
+  ok: OK
+  cancel: Cancel
 message:
-  updated: 更新しました
-  deleted: 削除しました
-  failed_to_delete: 削除に失敗しました
-  extended: 有効期限を延長しました
-  revoked: 証明書を失効しました
+  updated: Updated successfully.
+  deleted: Deleted successfully.
+  failed_to_delete: Faild to delete.
+  failed_to_update: Failed to update.
+  extended: The expires of certification has been extended.
+  revoked: The certification has been revoked.
+  pkcs12_password: Import the certification to your browser, using this password
+  confirm_action: <span id="action-name"></span>?
+  new_user: Fill in the form.
+  sentmail: Send a message for the URL of the certification.

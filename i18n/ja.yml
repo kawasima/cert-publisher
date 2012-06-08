@@ -4,17 +4,29 @@ field:
   locality_name: 市区郡
   organization_name: 会社名
   organization_unit_name: 部署名
-  common_name: ドメイン
+  common_name: アカウント名
   email_address: メールアドレス
+  ca_password: CAのパスワード
+  expires: 有効期限
+  pkcs12_password: 証明書に設定するパスワード
 button:
   register: 登録
   new_user: 新規発行する
+  sendmail: URL通知
   delete: 削除
-  extend: 延長
+  extension: 延長
   revoke: 失効
+  download: ダウンロード
+  ok: はい
+  cancel:  いいえ
 message:
   updated: 更新しました
   deleted: 削除しました
-  failed_to_delete: 削除に失敗しました
+  failed_to_delete: 削除に失敗しました。
+  failed_to_update: 更新に失敗しました。
   extended: 有効期限を延長しました
   revoked: 証明書を失効しました
+  pkcs12_password: このパスワードを使って、ブラウザに証明書をインストールしてください。
+  confirm_action: 本当に<span id="action-name"></span>しますか?
+  new_user: 発行するメールアドレスを入力してください。
+  sentmail: 通知メールを送信しました。
