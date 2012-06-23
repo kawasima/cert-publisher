@@ -8,14 +8,14 @@ class UserRoutes < Sinatra::Base
   register Sinatra::Reloader
   register Sinatra::ConfigFile
 
-  config_file 'config/defaults.yml'
-
   set :default_locale, 'en'
   set :translations, './i18n'
   set :haml, { :format => :html5 }
   set :sessions, true
-  set :root, File.dirname(__FILE__)
   set :views, 'views/user'
+  set :root, File.join(File.dirname(__FILE__), "..")
+
+  config_file "config/defaults.yml"
 
   before do
     request.script_name = '/cert-publisher'
