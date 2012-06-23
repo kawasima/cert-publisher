@@ -1,0 +1,103 @@
+- if flash[:notice]
+  .alert.alert-success= flash[:notice]
+
+- if flash[:error]
+  .alert.alert-error= flash[:error]
+
+%div.alert.alert-info
+  %h3.alert-heading
+    = @user.common_name
+    さん、こんにちは
+  - if params[:back_url]
+    %p
+      %a.btn.btn-large{ :href => params[:back_url] } Continue
+
+%div.row
+  %div.span4{ :style => "overflow: hidden;" }
+    %div.page-header
+      %h3
+        %i.icon-user
+        証明書
+    %table.table.table-condensed
+      %tr
+        %th= t.field.country_name
+        %td= @user.country_name
+      %tr
+        %th= t.field.province_name
+        %td= @user.province_name
+      %tr
+        %th= t.field.locality_name
+        %td= @user.locality_name
+      %tr
+        %th= t.field.organization_name
+        %td= @user.organization_name
+      %tr
+        %th= t.field.organization_unit_name
+        %td= @user.organization_unit_name
+      %tr
+        %th= t.field.common_name
+        %td= @user.common_name
+      %tr
+        %th= t.field.email_address
+        %td= @user.email_address
+      %tr
+        %th= t.field.expires
+        %td= l(@user.expires)
+
+  %div.span8
+    %div.page-header
+      %h3
+        %i.icon-time
+        アクセス履歴
+    %div.alert
+      %span.small 見覚えのないアクセスがないか確認してください。
+    %table.table.table-condensed
+      %tr
+        %th= t.field.access_datetime
+        %th= t.field.access_device
+        %th= t.field.access_purpose
+      - @user.access_logs(:limit => 5, :order => [ :session_started_at.desc ]).each do |access_log|
+        %tr
+          %td= access_log.session_started_at.strftime("%Y/%m/%d %H:%M:%S")
+          %td= access_log.device_name
+          %td= access_log.purpose
+
+    %div.page-header
+      %h3
+        %i.icon-hdd
+        機器の一覧
+    %div.alert
+      %span.small 不要になった端末データは削除してください。
+    %ul
+      - @user.user_devices.each do |device|
+        %li
+          = "#{device.name} (#{device.serial})"
+          - if request.cookies['device_token'] != device.token
+            %a{ :href => "#dialog-confirm", :"data-toggle" => "modal", :"data-url" => url("/user/remove_device/#{device.id}", false) }
+              %i.icon-trash
+              %span{ :style => "display: none" }= t.button.delete
+          - else
+            %span.label.label-info 現在アクセス中
+
+#dialog-confirm.modal.hide
+  .modal-body
+    %p= t.message.confirm_action
+  .modal-footer
+    %form{ :style => "display: inline", :method => "post" }
+      %button#button-ok.btn.btn-danger{ :type => "submit" }= t.button.ok
+    %button#button-cancel.btn= t.button.cancel
+
+:javascript
+  $(document).ready(function() {
+    $("#dialog-confirm").modal({show: false});
+
+    $("a[data-toggle=modal]").click(function() {
+      $("#dialog-confirm form").attr("action", $(this).attr("data-url"));
+      $("#dialog-confirm #action-name").html($(this).text());
+    });
+
+    $("#dialog-confirm #button-cancel").click(function() {
+      $("#dialog-confirm").modal('hide');
+      return false;
+    });
+  });

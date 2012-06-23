@@ -3,5 +3,6 @@ require 'bundler'
 
 Bundler.require
 
-require './app'
-run CertPublisherApp
+root = ::File.dirname(__FILE__)
+require ::File.join(root, 'app')
+run CertPublisherApp.new

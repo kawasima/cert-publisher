@@ -1,25 +1,24 @@
-%div.well
-  この端末(ブラウザ)では初めてのアクセスなので、機器登録が必要です
+%div.well= t.message.add_device_guide
 %form.form-horizontal{ :method => "post", :action => url("/user/add_device", false) }
   %fieldset
     %div.control-group
-      %label.control-label 機器名称
+      %label.control-label= t.field.device_name
       %div.controls
         %input{ :type => "text", :name => "user_device[name]", :value => @user_device[:name] }
         - if @user_device.errors[:name]
           %span.help-inline= @user_device.errors[:name]
     %div.control-group
-      %label.control-label 機器番号/シリアル
+      %label.control-label= t.field.device_serial
       %div.controls
         %input{ :type => "text", :name => "user_device[serial]", :value => @user_device[:serial] }
         - if @user_device.errors[:serial]
           %span.help-inline= @user_device.errors[:serial]
     %div.control-group
-      %label.control-label 秘密の質問
+      %label.control-label= t.field.secret_question
       %div.controls
         %p= @user.secret[:question]
         %input{ :type => "text", :name => "answer" }
         - if flash[:error]
           %span.help-inline= flash[:error]
     %div.form-actions
-      %button.btn.btn-primary{ :type => "submit" } Save changes
+      %button.btn.btn-primary{ :type => "submit" }= t.button.register

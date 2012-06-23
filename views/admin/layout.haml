@@ -11,7 +11,10 @@
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
-          %a.brand{ :href => url('/', false) } Cert Publisher
+          %a.brand{ :href => url('/admin/', false) } Cert Publisher
+          %ul.nav
+            %li
+              %a{ :href => url('/admin/access_log', false) }= t.button.access_log
     .container
       =yield
   

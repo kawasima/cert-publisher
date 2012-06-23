@@ -14,3 +14,7 @@ ca:
 database_url: "mysql://user:password@localhost/cert_publisher"
 auth:
   htpasswd: /etc/apache2/htpasswd
+  key: "[HMAC key]"
+purposes:
+  - "Try it"
+  - "To deploy and test"

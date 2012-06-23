@@ -1,0 +1,38 @@
+%div.well= t.message.start_session_guide
+%form.form-horizontal{ :method => "post", :action => url("/user/start_session", false) }
+  %input{ :type => "hidden", :name => "back_url", :value => params[:back_url] }
+  %fieldset
+    %div.control-group
+      %label.control-label= t.field.access_log_purpose
+      %div.controls
+        %div.combobox-container
+          %input.span5{ :type => "text", :name => "access_log[purpose]", :value => @access_log.purpose, :"data-provide" => "typeahead" }
+          %span#purpose-toggle.add-on.btn.dropdown-toggle
+            %span.caret
+        - if @access_log.errors[:purpose]
+          %span.help-inline= @access_log.errors[:purpose]
+    %div.form-actions
+      %button.btn.btn-primary{ :type => "submit" }= t.button.register
+
+:javascript
+  $(document).ready(function($) {
+    $("input[name='access_log[purpose]']")
+      .typeahead({
+        source: ["#{@purposes.join('","')}"]
+      });
+    $("#purpose-toggle")
+      .bind("click", function() {
+        var input = $("input[name='access_log[purpose]']");
+        var th = input.data('typeahead');
+        th.query = input.val();
+        th.render(th.options.source).show().$menu.find("li").each(function(idx, l) {
+          if ($(l).text() == input.val()) {
+            th.$menu.scrollTop($(l).addClass('active').height() * idx);
+          } else {
+            $(l).removeClass('active');
+          }
+        });
+        input.focus();
+        return false;
+      });
+  });

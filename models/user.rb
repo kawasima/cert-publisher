@@ -22,6 +22,7 @@ class User
   property :token, String, :length => 20, :default => lambda { |r, p| rand(36**20).to_s(36) }
 
   has n, :user_devices
+  has n, :access_logs
   has 1, :secret
 end
 
