@@ -1,0 +1,19 @@
+%div.well= t.message.new_user
+
+- if flash[:notice]
+  .alert.alert-success= flash[:notice]
+
+- if flash[:error]
+  .alert.alert-error= flash[:error]
+
+- if @new_cert
+  %table
+    %tr
+      %td text
+      %td
+        %pre= @new_cert.to_text
+
+%form{ :method => 'post' }
+  %label{ :for => 'ca-password' }
+  %input#ca-password{ :type => 'password', :name => 'ca_password' }
+  %input.btn.btn-primary{ :type => 'submit', :value => t.button.register }
