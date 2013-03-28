@@ -28,6 +28,10 @@
     %div.control-group
       %label.control-label{ :for => 'expires' }= t.field.expires
       %div.controls= l(@user.expires)
+    %div.control-group
+      %label.control-label{ :for => 'device_name' }= t.field.device_name
+      - @user.user_devices.each do |device|
+        %div.controls= device.name
   %div.form-actions
     %button#download-button.btn.btn-success.btn-large{ :type => 'button' } Download
     %div#password-view.alert.alert-success{ :style => "display:none" }
