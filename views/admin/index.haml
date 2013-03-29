@@ -9,12 +9,16 @@
 %table.table
   %tr
     %th= t.field.email_address
+    %th= t.field.device_name
     %th= t.field.expires
-    %th 
+    %th
   - @users.each do |user|
     %tr.entry
       %td
         %a{ :href => url("/show/#{user.token}", false) }= user.email_address
+      %td
+        - user.user_devices.each do |device|
+          %div=device.name
       %td= l(user.expires)
       %td
         %div.btn-group
