@@ -2,7 +2,7 @@
 
 require 'sinatra/base'
 
-require 'models/access_log'
+require_relative '../models/access_log'
 
 class AdminRoutes < Sinatra::Application
   register Sinatra::Flash
@@ -27,6 +27,10 @@ class AdminRoutes < Sinatra::Application
     page = params[:page] || 1
     @users = User.page page, :per_page => 10
     haml :index
+  end
+
+  get '/admin/upgrade' do
+    DataMapper.auto_upgrade!
   end
 
   get '/admin/new_user' do

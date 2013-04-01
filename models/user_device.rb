@@ -1,6 +1,6 @@
 require 'data_mapper'
 
-require 'models/user'
+require_relative 'user'
 
 class UserDevice
   include DataMapper::Resource

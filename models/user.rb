@@ -1,7 +1,7 @@
 require 'data_mapper'
 
-require 'models/user_device'
-require 'models/secret'
+require_relative 'user_device'
+require_relative 'secret'
 
 class User
   include DataMapper::Resource
@@ -21,8 +21,8 @@ class User
   property :expires, DateTime, :required => true
   property :token, String, :length => 20, :default => lambda { |r, p| rand(36**20).to_s(36) }
 
-  has n, :user_devices
-  has n, :access_logs
-  has 1, :secret
+  has n, :user_devices, :constraint => :destroy
+  has n, :access_logs, :constraint => :set_nil
+  has 1, :secret, :constraint => :destroy
 end
 

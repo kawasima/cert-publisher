@@ -43,7 +43,7 @@ class UserRoutes < Sinatra::Base
   end
 
   post '/user/secret' do
-    @secret = @user.secret or Secret.new(:user => @user)
+    @secret = @user.secret || Secret.new(:user => @user)
     @secret.attributes = params[:secret]
 
     if @secret.save
@@ -108,8 +108,8 @@ class UserRoutes < Sinatra::Base
 
   post '/user/start_session' do
     @access_log = AccessLog.new(params[:access_log])
-    @access_log.user = @user
     @access_log.user_name = @user.common_name
+    @access_log.user_id   = @user.id
     device_token = request.cookies['device_token']
     user_device = UserDevice.first(:token => device_token)
     redirect to('/user/add_device') unless user_device

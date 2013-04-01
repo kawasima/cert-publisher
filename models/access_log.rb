@@ -8,6 +8,5 @@ class AccessLog
   property :user_name, String, :required => true
   property :device_name, String, :required => true
   property :purpose, String, :required => true, :length => 255
-
-  belongs_to :user
+  property :user_id, Integer, :required => false
 end

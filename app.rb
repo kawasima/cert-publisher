@@ -9,11 +9,12 @@ require 'base64'
 require 'openssl'
 require 'pony'
 
-require 'certificate'
-require 'models/user'
+require_relative 'certificate'
+require_relative 'models/user'
+require_relative 'models/access_log'
 
-require 'routes/user_routes'
-require 'routes/admin_routes'
+require_relative 'routes/user_routes'
+require_relative 'routes/admin_routes'
 
 class CertPublisherApp < Sinatra::Base
   register Sinatra::Flash
@@ -21,23 +22,24 @@ class CertPublisherApp < Sinatra::Base
   register Sinatra::Reloader
   register Sinatra::ConfigFile
 
-  config_file 'config/defaults.yml'
-
   set :default_locale, 'en'
   set :translations, './i18n'
   set :haml, { :format => :html5 }
   set :sessions, true
   set :root, File.dirname(__FILE__)
 
+  config_file 'config/defaults.yml'
+
   use UserRoutes
   use AdminRoutes
 
   def initialize
     super
+    DataMapper::Logger.new(STDERR, :debug)
     DataMapper.setup(:default, settings.database_url)
     DataMapper::Validations::I18n.localize! 'ja'
     DataMapper::Pagination.defaults[:pager_class] = ""
-    DataMapper.auto_upgrade!
+    DataMapper.finalize
   end
 
   before do
