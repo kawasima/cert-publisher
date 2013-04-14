@@ -1,8 +1,9 @@
-require 'rubygems'
-require 'bundler'
+#!/usr/bin/env rackup
+# encoding: utf-8
 
-Bundler.require
+# This file can be used to start Padrino,
+# just execute it from the command line.
 
-root = ::File.dirname(__FILE__)
-require ::File.join(root, 'app')
-run CertPublisherApp.new
+require File.expand_path("../config/boot.rb", __FILE__)
+
+run Padrino.application

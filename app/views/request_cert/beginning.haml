@@ -1,0 +1,11 @@
+%div.well You're a first user! You should be system admin user. Please input CA password.
+
+= flash_tag :notice, :class => "alert alert-error"
+
+= form_for :user, url(:admin_user, :new), :class => "form-horizontal" do |f|
+    %div.control-group
+      %label.control-label{ :for => 'ca-password' }= t('field.ca_password')
+      %div.controls.doc-input-sizes
+        = password_field_tag :ca_password
+  %div.form-actions
+    %button.btn.btn-primary{ :type => 'submit' }= t('button.register')

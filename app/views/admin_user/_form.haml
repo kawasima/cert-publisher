@@ -1,0 +1,56 @@
+= control_group_for user, :uid do
+  = f.label :uid,
+    { :caption => t('field.uid'),
+      :required => true, :class => "control-label"}
+  %div.controls.docs-input-sizes
+    = f.text_field :uid
+    %span.help-inline= f.error_message_on :uid
+= control_group_for user, :country_name do
+  = f.label :country_name,
+    { :caption => t('field.country_name'),
+      :required => true, :class => "control-label"}
+  %div.controls.docs-input-sizes
+    = f.text_field :country_name
+    %span.help-inline= f.error_message_on :country_name
+= control_group_for user, :province_name do
+  = f.label :province_name,
+    { :caption => t('field.province_name'),
+      :required => true, :class => "control-label"}
+  %div.controls.doc-input-sizes
+    = f.text_field :province_name
+    %span.help-inline= f.error_message_on :province_name
+= control_group_for user, :locality_name do
+  = f.label :locality_name,
+    { :caption => t('field.locality_name'),
+      :class => "control-label"}
+  %div.controls.doc-input-sizes
+    = f.text_field :locality_name
+    %span.help-inline= f.error_message_on :locality_name
+= control_group_for user, :organization_name do
+  = f.label :organization_name,
+    { :caption => t('field.organization_name'),
+      :required => true, :class => "control-label"}
+  %div.controls.doc-input-sizes
+    = f.text_field :organization_name
+    %span.help-inline= f.error_message_on :organization_name
+= control_group_for user, :organization_unit_name do
+  = f.label :organization_unit_name,
+    { :caption => t('field.organization_unit_name'),
+      :class => "control-label"}
+  %div.controls.doc-input-sizes
+    = f.text_field :organization_unit_name        
+    %span.help-inline= f.error_message_on :organization_unit_name
+= control_group_for user, :common_name do
+  = f.label :common_name,
+    { :caption => t('field.common_name'),
+      :required => true, :class => "control-label"}
+  %div.controls.doc-input-sizes
+    = f.text_field :common_name
+    %span.help-inline= f.error_message_on :common_name
+= control_group_for user, :email_address do
+  = f.label :email_address,
+    { :caption => t('field.email_address'),
+      :required => true, :class => "control-label"}
+  %div.controls.doc-input-sizes
+    = f.text_field :email_address
+    %span.help-inline= f.error_message_on :emain_address

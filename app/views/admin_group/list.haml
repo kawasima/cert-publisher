@@ -1,0 +1,19 @@
+%h1 List of Groups
+- if flash[:notice]
+  .alert.alert-success= flash[:notice]
+
+- if flash[:error]
+  .alert.alert-error= flash[:error]
+
+%p.pull-right
+  = link_to t('button.new_group'), url(:admin_group, :new), :class => "btn btn-primary"
+
+%table.table
+  %tr
+    %th= t('field.group_name')
+    %th= t('field.description')
+  - @groups.each do |group|
+    %tr.entry
+      %td
+        = link_to group.name, url(:admin_group, :show, :name => group.name)
+      %td= group.description

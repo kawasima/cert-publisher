@@ -1,0 +1,21 @@
+!!!
+%html
+  %head
+    %meta{ :charset => 'utf-8' }
+    %title Cert Publisher
+    = stylesheet_link_tag 'bootstrap', 'application', 'select2'
+    = javascript_include_tag 'jquery', 'bootstrap', 'select2.min'
+  %body{ :style => 'padding-top: 90px;' }
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          = link_to "Cert Publisher", url(:admin_user, :index), :class => "brand"
+          %ul.nav
+            %li
+              = link_to t('button.admin_group'), url(:admin_group, :index)
+          %ul.nav
+            %li
+              = link_to t('button.access_log'), url(:admin_audit, :access_log)
+    .container
+      =yield
+  

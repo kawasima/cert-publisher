@@ -1,7 +1,3 @@
-require 'data_mapper'
-
-require_relative 'user'
-
 class UserDevice
   include DataMapper::Resource
 

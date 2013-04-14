@@ -1,0 +1,79 @@
+en:
+  field:
+    uid: User ID
+    country_name: Country
+    province_name: Province
+    locality_name: Locality
+    organization_name: Organization
+    organization_unit_name: Organization unit
+    common_name: Full name
+    email_address: Email address
+    ca_password: Password of CA
+    expires: Expires
+    pkcs12_password: Password of certification
+    device_name: Device name
+    device_serial: Serial number
+    access_datetime: "Date/Time"
+    access_username: User name
+    access_device: Device
+    access_purpose: Purpose
+    secret_question: Secret question
+    secret_answer: Answer
+    access_log_purpose: Access purpose
+    group_name: Group name
+    description: Description 
+    certification: Certification
+    access_log: Access Log
+    request_otp: One-time password
+    unlock_code: Unlock code
+  button:
+    register: Register
+    add: Add
+    remove: Remove
+    new_user: New user
+    new_group: New group
+    sendmail: Send URL
+    delete: Delete
+    extend: Extend
+    revoke: Revoke
+    download: Download
+    access_log: Access log
+    admin_group: Group
+    ok: OK
+    cancel: Cancel
+    request_certification: Request certification
+    request_otp: One-time password
+    lock: Lock account
+    unlock: Unlock account
+  message:
+    tagline: Cert Publisher is a powerful, robust authentication and authorized system.
+    registered: Registered successfully.
+    updated: Updated successfully.
+    deleted: Deleted successfully.
+    failed_to_delete: Faild to delete.
+    failed_to_update: Failed to update.
+    extended: The expires of certification has been extended.
+    revoked: The certification has been revoked.
+    accepted_request: Accepted your request. Wait a second!
+    pkcs12_password: Import the certification to your browser, using this password.
+    confirm_action: <span id="action-name"></span>?
+    new_user: Fill in the form.
+    new_group: Fill in the form.
+    show_user: You can download your certification here.
+    sentmail: Send a message for the URL of the certification.
+    secret_question_hint: Please register a question that you have not talked to anyone yet.
+    secret_question_guide: You need to register a secret question for changing your profile later.
+    secret_answer_hint: ""
+    add_device_guide: You need to register this device.
+    start_session_guide: Why do you access to this site?
+    mismatch_secret: Secret question and answer mismatch
+    unregistered: Unregistered
+    unauthenticated: Authentication needed.
+    hello: Hello, %{name}
+    alert_sign_of_forced_entry: Check whether there is a sign of forced entry.
+    list_of_devices: Your devices
+    delete_unneeded_devices: Delete unneeded devices, please.
+    current_device: Now using
+    request_otp: One-time password
+    request_otp_guide: If you click this button, you can get OTP.
+    duplicated_uid: User ID has already been used.

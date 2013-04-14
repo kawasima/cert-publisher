@@ -1,0 +1,104 @@
+= flash_tag :notice, :class => "alert alert-success"
+= flash_tag :error,  :class => "alert alert-error"
+
+- unless @request_certs.empty?
+  %div.page-header
+    %h3
+      %i.icon-person
+      List of certificattion requests.
+
+  %table.table
+    %tr
+      %th= t('field.common_name')
+      %th
+    - @request_certs.each do |request_cert|
+      %tr.entry
+        %td
+          = "#{request_cert.common_name} (#{request_cert.email_address})"
+        %td
+          = link_to "Accept", url(:admin_user, :accept, :request_cert_id => request_cert.id, :authenticity_token => session[:csrf]), :class => "btn btn-primary btn-small", :method => :post
+          = link_to "Decline", url(:request_cert, :destroy, :id => request_cert.id), :class => "btn btn-danger btn-small"
+          
+%div.page-header
+  %h3
+    %i.icon-address-book
+    List of users
+
+= link_to t('button.new_user'), url(:admin_user, :new), :class => "btn btn-primary pull-right"
+
+%table.table
+  %tr
+    %th= t('field.email_address')
+    %th= t('field.device_name')
+    %th= t('field.expires')
+    %th
+  - @users.each do |user|
+    %tr.entry
+      %td
+        = link_to "#{user.common_name} (#{user.email_address})", url(:user, :show, :token => user.cert.token)
+      %td
+        - if user.user_devices.count > 0
+          %ul
+            - user.user_devices.each do |device|
+              %li= device.name
+      %td= l(user.cert.expires)
+      %td
+        %div.btn-group
+          %a.btn.dropdown-toggle{ :"data-toggle" => "dropdown", :href => "#" }
+            Action
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              %a{:href => "#dialog-confirm",
+                 :"data-toggle" => "modal",
+                 :"data-url" => url(:admin_user, :sendmail, :id => user.id) }
+                = t('button.sendmail')
+            %li
+              %a{:href => "#dialog-confirm",
+                 :"data-toggle" => "modal",
+                 :"data-url" => url(:admin_user, :extend, :id => user.id),
+                 :"data-required-passwd" => "true"}
+                = t('button.extend')
+            %li
+              %a{:href => "#dialog-confirm",
+                 :"data-toggle" => "modal",
+                 :"data-url" => url(:admin_user, :destroy, :id => user.id) }
+                = t('button.delete')
+            %li
+              %a{:href => "#dialog-confirm",
+                 :"data-toggle" => "modal",
+                 :"data-url" => url(:admin_user, :revoke, :id => user.id) }
+                = t('button.revoke')
+
+.pagination= @users.pager.to_html url(:admin_user, :index), :size => 5
+
+#dialog-confirm.modal.hide
+  = form_tag "" do
+    .modal-body
+      %p= t('message.confirm_action')
+      %p#ca-password-div
+        %label{:for => "ca-passwd"}= t('field.ca_password')
+        %input#ca-passwd{:type => "password", :name => "ca_password"}
+    .modal-footer
+      %button#button-ok.btn.btn-danger{ :type => "submit" }= t('button.ok')
+      %button#button-cancel.btn= t('button.cancel')
+
+:javascript
+  $(function() {
+    $("#dialog-confirm").modal({show: false});
+
+    $(".dropdown-menu a[data-toggle=modal]").click(function() {
+      if ($(this).attr("data-required-passwd") == "true") {
+        $("#dialog-confirm #ca-password-div").show();
+      } else {
+        $("#dialog-confirm #ca-password-div").hide();
+      }
+      $("#dialog-confirm form").attr("action", $(this).attr("data-url"));
+      $("#dialog-confirm #action-name").html($(this).html());
+    });
+
+    $("#dialog-confirm #button-cancel").click(function() {
+      $("#dialog-confirm").modal('hide');
+      return false;
+    });
+  });

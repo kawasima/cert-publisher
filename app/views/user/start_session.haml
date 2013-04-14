@@ -1,0 +1,35 @@
+%div.well= t('message.start_session_guide')
+= form_for :access_log, url(:user, :start_session), :class => "form-horizontal" do |f|
+  %input{ :type => "hidden", :name => "back_url", :value => params[:back_url] }
+  %fieldset
+    %div.control-group
+      %label.control-label= t('field.access_log_purpose')
+      %div.controls
+        = f.hidden_field :purpose, :class => "input-xlarge"
+    %div.form-actions
+      %button.btn.btn-primary{ :type => "submit" }= t('button.register')
+
+:javascript
+  $(function($) {
+    var choices = [#{@purposes.map{|el| "{id:'#{el}',text:'#{el}'}"}.join(",")}];
+    $(":input[name='access_log[purpose]']").select2({
+      query: function(query) {
+        var data = {}, i;
+        data.results = [];
+        if (query.term !== "")
+          data.results.push({id: query.term, text: query.term});
+        for (i=0; i < choices.length; i++)
+          data.results.push(choices[i]);
+        query.callback(data);
+      }
+    }).on("change", function() {
+      var result = $(this).select2('val'), found = false;
+      for (var i=0; i < choices.length; i++) {
+        if (choices[i].id.localeCompare(result) === 0) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) { choices.push({id: result, text: result}); }
+    });
+  });

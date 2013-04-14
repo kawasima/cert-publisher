@@ -1,0 +1,72 @@
+%div.well= t('message.new_group')
+
+%h3= "Group: #{@group.name}"
+- unless @group.description.empty?
+  %pre= @group.description
+
+%fieldset
+  %legend
+    Members: (
+    %span#members-count= @group.users.count
+    )
+  %table#members
+    %tr
+      %th.span6= t('field.common_name')
+      %th.span3 role
+      %th.span3
+
+    - @group.members.each do |member|
+      %tr
+        %td= member.user.common_name
+        %td= member.role
+        %td
+          %button.btn.btn-danger.btn-small.remove-btn{:"data-user-id" => member.user.id}
+            = t('button.remove')
+    %tr
+      %td
+        %select#new-users.input-xlarge
+          - @users.each do |user|
+            %option{:value => user.id}= user.common_name
+      %td
+        = select_tag(:new_user_role, :options => Member.role.options[:flags])
+      %td
+        %button#add-btn.btn.btn-primary
+          = t('button.add')
+          
+:javascript
+  $.ajaxSetup({headers: {'X-CSRF-TOKEN': '#{session[:csrf]}'}});
+
+  $("select[name=new_user_role]").select2();
+  $("#new-users").select2({
+    placeholder: "Select a user"
+  });
+  $("#add-btn").click(function() {
+    var option = $("#new-users option:selected");
+    var el = $('<tr><td>#{image_tag("select2-spinner.gif")}"></td><td></td></tr>');
+    $("#new-users").parents("tr:first").before(el);
+    $.ajax({
+      type: 'post',
+      url:  '#{url(:admin_group, :add_user, :name => @group.name, :user_id =>"")}' + option.attr("value"),
+      success: function(data) {
+        $("#members-count").text(Number($("#members-count").text()) + 1);
+        $("td:eq(0)", el).html(option.text());
+        $("td:eq(1)", el).html('<button class="btn btn-danger remove-btn" data-user-id="' +
+                               option.attr('value') +
+                               '">#{t('button.remove')}</button>');
+      },
+      error: function() {
+        el.remove();
+      }
+    });
+  });
+  $("#members").on("click", "button.remove-btn", function() {
+    var button = $(this);
+    $.ajax({
+      type: 'post',
+      url:  '#{url(:admin_group, :remove_user, :name => @group.name, :user_id => "")}' + button.attr("data-user-id"),
+      success: function(data) {
+        button.parents("tr:first").remove();
+        $("#members-count").text(Number($("#members-count").text()) - 1);
+      }
+    });
+  });

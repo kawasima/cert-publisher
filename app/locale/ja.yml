@@ -1,0 +1,75 @@
+ja:
+  field:
+    uid: ユーザID
+    country_name: 国名
+    province_name: 都道府県
+    locality_name: 市区郡
+    organization_name: 会社名
+    organization_unit_name: 部署名
+    common_name: アカウント名
+    email_address: メールアドレス
+    ca_password: CAのパスワード
+    expires: 有効期限
+    pkcs12_password: 証明書に設定するパスワード
+    device_name: 機器名称
+    device_serial: "機器番号/シリアル"
+    access_datetime: アクセス日時
+    access_username: アクセス者
+    access_device: デバイス
+    access_purpose: 目的
+    secret_question: 秘密の質問
+    secret_answer: 答え
+    access_log_purpose: アクセス事由
+    group_name: グループ名
+    description: 詳細 
+    certification: 証明書
+    access_log: アクセス履歴
+    request_otp: ワンタイムパスワード
+    unlock_code: ロック解除
+  button:
+    register: 登録
+    add: 追加
+    remove: 削除
+    new_user: 新規発行する
+    new_group: 新規グループ
+    sendmail: URL通知
+    delete: 削除
+    extension: 延長
+    revoke: 失効
+    download: ダウンロード
+    access_log: アクセス履歴
+    admin_group: グループ
+    ok: はい
+    cancel:  いいえ
+    request_certification: 証明書申請
+    request_otp: ワンタイムパスワード
+    lock: ロック
+    unlock: ロック解除
+  message:
+    tagline: Cert Publisherは強力で堅牢な認証のしくみです。
+    updated: 更新しました。
+    deleted: 削除しました。
+    failed_to_delete: 削除に失敗しました。
+    failed_to_update: 更新に失敗しました。
+    extended: 有効期限を延長しました。
+    revoked: 証明書を失効しました。
+    pkcs12_password: このパスワードを使って、ブラウザに証明書をインストールしてください。
+    confirm_action: 本当に<span id="action-name"></span>しますか?
+    new_user: 発行するメールアドレスを入力してください。
+    sentmail: 通知メールを送信しました。
+    secret_question_hint: 他人には話したことがない質問を登録してください。
+    secret_question_guide: あなたの設定を変更するための秘密の質問を設定できます。
+    secret_answer_hint: 回答はかな/漢字含めて、完全一致する必要があるので、質問に「〜かな名は?」などと入れておくとよいかもしれません。
+    add_device_guide: この端末(ブラウザ)では初めてのアクセスなので、機器登録が必要です。
+    start_session_guide: アクセスの目的を教えてください。
+    mismatch_secret: 秘密の質問の答えに誤りがあります。
+    unregistered: 登録されていません。
+    unauthenticated: 認証が必要です。
+    hello: "%{name}さん、こんにちは"
+    alert_sign_of_forced_entry: 見覚えのないアクセスがないか確認してください。
+    list_of_devices: デバイスの一覧
+    delete_unneeded_devices: 不要になった端末データは削除してください。
+    current_device: 現在アクセス中
+    request_otp: One-time password
+    request_otp_guide: If you click this button, you can get OTP.
+    duplicated_uid: ユーザIDは既に登録されています。

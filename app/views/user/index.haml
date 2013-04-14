@@ -1,0 +1,136 @@
+= flash_tag :notice, :class => "alert alert-success"
+= flash_tag :error,  :class => "alert alert-error"
+
+%div.alert.alert-info
+  %h3.alert-heading
+    = t('message.hello', :name => @user.common_name)
+  - if params[:back_url]
+    %p
+      %a.btn.btn-large{ :href => params[:back_url] } Continue
+  %div
+    %ul.listview
+      %li#request-otp{:style => "display:inline-block"}
+        %div.icon
+          %i.icon-certificate
+        %div.data
+          %h4= t('button.request_otp')
+          %p Get one time password.
+      %li#lock-account{:style => "display:inline-block"}
+        - form_tag url(:account_lock, :create), :class => "form-inline" do
+          %div.icon
+            %i.icon-lock
+          %div.data
+            %h4= t('button.lock')
+            %p Lock your elements.
+
+%div.row
+  %div.span4{ :style => "overflow: hidden;" }
+    %div.page-header
+      %h3
+        %i.icon-user
+        = t('field.certification')
+    %table.table.table-condensed
+      %tr
+        %th= t('field.country_name')
+        %td= @user.country_name
+      %tr
+        %th= t('field.province_name')
+        %td= @user.province_name
+      %tr
+        %th= t('field.locality_name')
+        %td= @user.locality_name
+      %tr
+        %th= t('field.organization_name')
+        %td= @user.organization_name
+      %tr
+        %th= t('field.organization_unit_name')
+        %td= @user.organization_unit_name
+      %tr
+        %th= t('field.common_name')
+        %td= @user.common_name
+      %tr
+        %th= t('field.email_address')
+        %td= @user.email_address
+      %tr
+        %th= t('field.expires')
+        %td= l(@user.cert.expires)
+
+  %div.span8
+    %div.page-header
+      %h3
+        %i.icon-time
+        = t('field.access_log')
+    - if @user.access_logs.count > 0
+      %div.alert
+        %span.small= t('message.alert_sign_of_forced_entry')
+      %table.table.table-condensed
+        %tr
+          %th= t('field.access_datetime')
+          %th= t('field.access_device')
+          %th= t('field.access_purpose')
+        - @user.access_logs(:limit => 5, :order => [ :session_started_at.desc ]).each do |access_log|
+          %tr
+            %td= access_log.session_started_at.strftime("%Y/%m/%d %H:%M:%S")
+            %td= access_log.device_name
+            %td= access_log.purpose
+    - else
+      %div.alert.alert-info
+        %span.small= t('message.unregistered')
+
+    %div.page-header
+      %h3
+        %i.icon-hdd
+        = t('message.list_of_devices')
+    %div.alert
+      %span.small= t('message.delete_unneeded_devices')
+    %ul
+      - @user.user_devices.each do |device|
+        %li
+          = "#{device.name} (#{device.serial})"
+          - if request.cookies['device_token'] != device.token
+            = link_to "#dialog-confirm", "data-toggle" => "modal", :"data-url" => url(:user, :remove_device, :id => device.id) do
+              %i.icon-trash
+              %span{ :style => "display: none" }= t('button.delete')
+          - else
+            %span.label.label-info= t('message.current_device')
+
+#dialog-confirm.modal.hide
+  .modal-body
+    %p= t('message.confirm_action')
+  .modal-footer
+    = form_tag "", :style => "display: inline" do
+      %button#button-ok.btn.btn-danger{ :type => "submit" }= t('button.ok')
+    %button#button-cancel.btn= t('button.cancel')
+
+#dialog-otp.modal.hide
+  .modal-header
+    %button.close{:type=> "button", :data => {:dismiss => "modal"}, :"aria-hidden" => " true"} x
+    %h3 Your one-time password
+  .modal-body
+    %p.otp 
+
+:javascript
+  $(function() {
+    $("#dialog-confirm").modal({show: false});
+    $("#dialog-otp").modal({show: false});
+
+    $("a[data-toggle=modal]").click(function() {
+      $("#dialog-confirm form").attr("action", $(this).attr("data-url"));
+      $("#dialog-confirm #action-name").html($(this).text());
+    });
+
+    $("#dialog-confirm #button-cancel").click(function() {
+      $("#dialog-confirm").modal('hide');
+      return false;
+    });
+
+    $("#request-otp").click(function() {
+      $.get('#{url(:user, :show_otp)}', function(data) {
+        $("#dialog-otp p.otp").text(data.otp);
+        $("#dialog-otp").modal('show');
+      });
+    });
+    $("#lock-account").click(function() {
+      $("form", this).submit();
+    });
+  });

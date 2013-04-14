@@ -1,0 +1,23 @@
+.hero-unit
+  %h1
+    %i.icon-key
+    Cert Publisher
+  %p= t('message.tagline')
+  
+= flash_tag :notice, :class => "alert alert-success"
+%div
+  %ul.listview
+    %li
+      = link_to  url(:request_cert,:new) do
+        %div.icon
+          %i.icon-certificate
+        %div.data
+          %h4= t('button.request_certification')
+          %p hoge
+    %li
+      = link_to url(:account_lock, :destroy) do
+        %div.icon
+          %i.icon-unlock
+        %div.data
+          %h4= t('button.unlock')
+          %p hoge

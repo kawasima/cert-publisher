@@ -1,5 +1,3 @@
-require 'data_mapper'
-
 class AccessLog
   include DataMapper::Resource
 

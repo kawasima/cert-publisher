@@ -1,0 +1,8 @@
+= form_tag url(:account_lock, :destroy) do
+  = flash_tag(:error)
+  - field_set_tag do
+    %p
+      = label_tag :unlock_code, :caption => t('field.unlock_code')
+      = password_field_tag :unlock_code, :class => "input-xlarge"
+  - field_set_tag :class => 'form-actions' do
+    = submit_tag t('button.unlock'), :class => 'btn btn-primary'

@@ -1,14 +1,44 @@
-source "http://rubygems.org"
+source 'https://rubygems.org'
 
-gem "rack"
-gem "haml"
-gem "sinatra", :require => "sinatra/base"
-gem "sinatra-contrib", :require => 'sinatra/reloader'
-gem "sinatra-flash", "~> 0.3.0"
-gem "sinatra-r18n"
+# Distribute your app as a gem
+# gemspec
 
-gem "pony"
-gem "datamapper"
-gem "dm-pager"
-gem "dm-mysql-adapter"
-gem "dm-validations-i18n"
+# Server requirements
+# gem 'thin' # or mongrel
+# gem 'trinidad', :platform => 'jruby'
+
+# Optional JSON codec (faster performance)
+# gem 'oj'
+
+# Project requirements
+gem 'rake'
+gem 'rotp'
+
+# Component requirements
+gem 'sass'
+gem 'haml'
+gem 'dm-mysql-adapter'
+gem 'dm-pager'
+gem 'dm-validations'
+gem 'dm-timestamps'
+gem 'dm-migrations'
+gem 'dm-constraints'
+gem 'dm-aggregates'
+gem 'dm-transactions'
+gem 'dm-types'
+gem 'dm-core'
+
+# Test requirements
+gem 'rspec', :group => 'test'
+gem 'rack-test', :require => 'rack/test', :group => 'test'
+
+# Padrino Stable Gem
+gem 'padrino', '0.11.0'
+
+# Or Padrino Edge
+# gem 'padrino', :github => 'padrino/padrino-framework'
+
+# Or Individual Gems
+# %w(core gen helpers cache mailer admin).each do |g|
+#   gem 'padrino-' + g, '0.11.0'
+# end

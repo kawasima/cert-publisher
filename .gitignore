@@ -1,2 +1,11 @@
+.DS_Store
+log/**/*
+tmp/**/*
+bin/*
+vendor/gems/*
+!vendor/gems/cache/
+.sass-cache/*
+db/*.db
+config/settings.yml
 Gemfile.lock
-config/defaults.yml
+*.pem

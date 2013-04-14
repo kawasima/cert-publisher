@@ -1,0 +1,23 @@
+%div.well= t('message.add_device_guide')
+
+= form_for :user_device, url(:user, :add_device), :class => "form-horizontal" do |f|
+  %fieldset
+    = control_group_for :user_device, :name do
+      %label.control-label= t('field.device_name')
+      %div.controls
+        = f.text_field :name
+        %span.help-inline= f.error_message_on :name
+    = control_group_for :user_device, :serial do
+      %label.control-label= t('field.device_serial')
+      %div.controls
+        = f.text_field :serial
+        %span.help-inline= f.error_message_on :serial
+    %div.control-group
+      %label.control-label= t('field.secret_question')
+      %div.controls
+        %p= @user.secret[:question]
+        %input{ :type => "text", :name => "answer" }
+        - if flash[:error]
+          %span.help-inline= flash[:error]
+    %div.form-actions
+      %button.btn.btn-primary{ :type => "submit" }= t('button.register')

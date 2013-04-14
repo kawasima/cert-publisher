@@ -1,0 +1,8 @@
+Hello, <%= @user.common_name %>.
+
+Lock you account temporarily !
+
+If you unlock, please access the following url.
+
+  <%= uri url(:account_lock, :destroy, :unlock_code => @user.account_lock.unlock_code) %>
+

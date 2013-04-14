@@ -1,0 +1,63 @@
+%div.well= t('message.show_user')
+
+= form_tag url(:user, :download, :token => @user.cert.token), :id => "download-form", :class => "form-horizontal" do
+  %input{ :type => 'hidden', :name => 'pkcs12_password'}
+  %fieldset
+    %div.control-group
+      = label_tag :country_name, :class => "control-label", :caption => t('field.country_name')
+      %div.controls= @user.country_name
+    %div.control-group
+      %label.control-label{ :for => 'privince-name' }= t('field.province_name')
+      %div.controls= @user.province_name
+    %div.control-group
+      %label.control-label{ :for => 'locality-name' }= t('field.locality_name')
+      %div.controls= @user.locality_name
+    %div.control-group
+      %label.control-label{ :for => 'organization-name' }= t('field.organization_name')
+      %div.controls= @user.organization_name
+    %div.control-group
+      %label.control-label{ :for => 'organization-unit-name' }= t('field.organization_unit_name')
+      %div.controls= @user.organization_unit_name
+    %div.control-group
+      %label.control-label{ :for => 'common-name' }= t('field.common_name')
+      %div.controls= @user.common_name
+    %div.control-group
+      %label.control-label{ :for => 'email-address' }= t('field.email_address')
+      %div.controls= @user.email_address
+    %div.control-group
+      %label.control-label{ :for => 'expires' }= t('field.expires')
+      %div.controls= l(@user.cert.expires)
+    %div.control-group
+      %label.control-label{ :for => 'device_name' }= t('field.device_name')
+      %div.controls
+        - if @user.user_devices.count > 0
+          %ul
+            - @user.user_devices.each do |device|
+              %li= device.name
+        - else
+          = t('message.unregistered')
+  %div.form-actions
+    %button#download-button.btn.btn-success.btn-large{ :type => 'button' } Download
+    %div#password-view.alert.alert-success{ :style => "display:none" }
+      %h4#pkcs12-password
+      = t('message.pkcs12_password')
+
+:javascript
+  $(function() {
+    function generate_password(len) {
+      var chars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_-=+;:'.,<>/~";
+      var passwd = "";
+      for(var i=0; i< len; i++) {
+        passwd += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return passwd;
+    }
+
+    $("button#download-button").one("click", function() {
+      var pkcs12_password = generate_password(8);
+      $("form#download-form :hidden[name=pkcs12_password]").val(pkcs12_password);
+      $("form#download-form").submit();
+      $("button#download-button").hide()
+      $("#password-view").show().find("#pkcs12-password").html(pkcs12_password);
+    });
+  });

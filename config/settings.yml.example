@@ -1,0 +1,22 @@
+site:
+  name: CertPublisher
+  admin:
+    email_address: admin@example.com
+entry:
+  country_name: JP
+  province_name: Tokyo
+  locality_name: Shinjuku-ku
+  organization_name: Example Inc.
+  organization_unit_name: Sales
+ca:
+  cert: cacert.pem
+  key:  cakey.pem
+crl:
+
+database_url: "mysql://root:root@localhost/cert-publisher"
+auth:
+  htpasswd: htpasswd
+  key: "kagidesu"
+purposes:
+  - "Try it"
+  - "To deploy and test"

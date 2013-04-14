@@ -1,0 +1,22 @@
+%div.well= t('message.new_group')
+
+- if flash[:notice]
+  .alert.alert-success= flash[:notice]
+
+- if flash[:error]
+  .alert.alert-error= flash[:error]
+
+= form_for :group, url(:admin_group, :new), :class => 'form-horizontal' do |f|
+  %fieldset
+    = control_group_for :group, :name do
+      %label.control-label{ :for => 'group-name' }= t('field.group_name')
+      %div.controls.docs-input-sizes
+        = f.text_field :name
+        %span.help-inline= f.error_message_on :name
+    = control_group_for :group, :description do
+      %label.control-label{ :for => 'group-descrition' }= t('field.description')
+      %div.controls.docs-input-sizes
+        = f.text_area :description, :class => "input-xxlarge", :rows => 3
+        %span.help-inline= f.error_message_on :description
+  %div.form-actions
+    %button.btn.btn-primary{ :type => 'submit' }= t('button.register')

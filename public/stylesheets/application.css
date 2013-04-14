@@ -1,0 +1,20 @@
+.masthead {
+  padding: 70px 0 80px;
+  margin-botton: 0;
+  color: #fff; }
+
+.jumbotron {
+  position: relatie;
+  padding: 40px 0;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 0, 0, 0.075);
+  background: #020031; }
+
+.otp {
+  font-size: 64pt;
+  line-height: 64pt;
+  text-align: center; }
+
+span.required {
+  color: #f33; }
