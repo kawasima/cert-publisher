@@ -5,11 +5,11 @@ CertPublisher::App.controllers :request_cert do
   end
 
   post :new, :map => '/request_cert/new' do
-    if User.all.empty?
-      session[:user] = params[:request_cert]
+    if User.count == 0
+      session[:request_cert] = User.new(params[:user])
       render 'request_cert/beginning'
     else
-      @request_cert = RequestCert.new(params[:request_cert])
+      @request_cert = RequestCert.new(params[:user])
       if @request_cert.save
         flash[:notice] = t('message.accepted_request')
         redirect url(:public, :index)
@@ -21,14 +21,15 @@ CertPublisher::App.controllers :request_cert do
   end
 
   post :beginning, :map => 'request_cert/beginning' do
-    if User.all.empty?
-      @user = User.new(session[:user])
+    if User.count == 0
+      @user = session.delete :request_cert
       @user.admin = true
       generate_cert
       if @user.save
         redirect url(:admin_user, :index)
       else
-        render 'request_cert/beginning'
+        flash[:error] = t('message.failed_to_update')
+        redirect url(:request_cert, :new)
       end
     else
       halt 403

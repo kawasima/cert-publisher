@@ -13,6 +13,7 @@ source 'https://rubygems.org'
 # Project requirements
 gem 'rake'
 gem 'rotp'
+gem 'highline'
 
 # Component requirements
 gem 'sass'

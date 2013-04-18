@@ -2,7 +2,8 @@
 
 = flash_tag :notice, :class => "alert alert-error"
 
-= form_for :user, url(:admin_user, :new), :class => "form-horizontal" do |f|
+= form_for :user, url(:request_cert, :beginning), :class => "form-horizontal" do |f|
+  = field_set_tag do
     %div.control-group
       %label.control-label{ :for => 'ca-password' }= t('field.ca_password')
       %div.controls.doc-input-sizes

@@ -1,38 +1,37 @@
 # encoding: utf-8
 
-require 'highline'
-require 'openssl'
-require 'sinatra'
-require 'sinatra/config_file'
-
-include OpenSSL
-
-
 namespace :cert_publisher do
   namespace :ca do
     desc "Generate CA"
-    task :generate do 
+    task :generate => :environment do 
+      include OpenSSL
+
+      config_file = Padrino.root("config", "settings.yml")
+      settings = if File.exists? config_file
+        document = IO.read(config_file)
+        HashWithIndifferentAccess.new(YAML.load(document) || {})
+      end
+
       HighLine.track_eof = false
-      config_file 'config/settings.yml'
       ui = HighLine.new
 
       cakey = PKey::RSA.generate(2048)
       passphrase = ui.ask("Enter pass phrase.") {|q| q.echo = false}
-      File.open(settings.ca["key"], "w") do |f|
+      File.open(settings[:ca][:key], "w") do |f|
         f.write(cakey.export(Cipher::Cipher.new("aes256"), passphrase))
       end
     
       subject = X509::Name.new
       subject.add_entry("C", ui.ask("Country? ") {|q|
-          q.default = settings.entry["country_name"]})
+          q.default = settings[:entry][:country_name]})
       subject.add_entry("ST", ui.ask("Province? ") {|q|
-                        q.default = settings.entry["province_name"] })
+                        q.default = settings[:entry][:province_name] })
       subject.add_entry("L", ui.ask("Locality? ") {|q|
-                        q.default = settings.entry["locality_name"] })
+                        q.default = settings[:entry][:locality_name] })
       subject.add_entry("O", ui.ask("Organization? ") {|q|
-          q.default = settings.entry["organization_name"] })
+          q.default = settings[:entry][:organization_name] })
       subject.add_entry("OU", ui.ask("Organization Unit? ") {|q|
-          q.default = settings.entry["organization_unit_name"] })
+          q.default = settings[:entry][:organization_unit_name] })
       subject.add_entry("CN", ui.ask("Common name? "))
       cacert = X509::Certificate.new
       cacert.serial = 0
@@ -52,7 +51,7 @@ namespace :cert_publisher do
 
       cacert.sign(cakey, "sha1")
 
-      File.open(settings.ca["cert"], "w") {|f| f.puts cacert.to_pem }
+      File.open(settings[:ca][:cert], "w") {|f| f.puts cacert.to_pem }
     end
   end
 end

@@ -60,7 +60,7 @@ CertPublisher::App.controllers :user do
     @secret = @user.secret || Secret.new(:user => @user)
     @secret.attributes = params[:secret]
     hmac = OpenSSL::HMAC.new(settings.auth[:key], OpenSSL::Digest::SHA1.new)
-    @secret.answer = hmac.update(@secret.answer)
+    @secret.answer = hmac.update(@secret.answer).to_s
 
     if @secret.save
       OperationLog.create(
@@ -85,7 +85,10 @@ CertPublisher::App.controllers :user do
     @user_device.user = @user
     @user_device.user_agent = request.user_agent
 
-    if @user.secret.answer != params[:answer]
+    hmac = OpenSSL::HMAC.new(settings.auth[:key], OpenSSL::Digest::SHA1.new)
+    answer = hmac.update(params[:answer]).to_s
+logger.error("#{params[:answer]}/#{answer}/#{@user.secret.answer}/#{@user.secret.answer!=answer}")
+    if @user.secret.answer != answer
       flash[:error] = t('message.mismatch_secret')
       render 'user/add_device'
     elsif @user_device.save
