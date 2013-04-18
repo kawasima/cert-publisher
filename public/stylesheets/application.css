@@ -1,3 +1,7 @@
+html {
+  overflow-y: scroll;
+}
+
 .masthead {
   padding: 70px 0 80px;
   margin-botton: 0;

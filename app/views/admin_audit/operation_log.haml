@@ -1,0 +1,14 @@
+%table.table
+  %tr
+    %th= t('field.operated_at')
+    %th= t('field.operated_by')
+    %th= t('field.url')
+    %th= t('field.data')
+  - @operation_logs.each do |operation_log|
+    %tr.entry
+      %td= operation_log.operated_at.strftime("%Y/%m/%d %H:%M:%S")
+      %td= operation_log.user_name
+      %td= operation_log.url
+      %td= operation_log.data
+
+.pagination= @operation_logs.pager.to_html url(:admin_audit, :operation_log), :size => 5

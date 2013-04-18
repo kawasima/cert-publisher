@@ -1,14 +1,23 @@
 CertPublisher::App.controllers :admin_group do
   before do
     authenticate!
-    unless @user.admin?
+    unless @user.admin? or @user.members(:role => :manager).count > 0
       halt 403
     end
   end
 
+  before :new do
+    halt 403 unless @user.admin?
+  end
+
   get :index, :map => '/admin/group/' do
     page = params[:page] || 1
-    @groups = Group.page page, :per_page => 10
+    if @user.admin?
+      @groups = Group.page page, :per_page => 10
+    else
+      @groups = Group.all(:members => [ :role => :manager,
+            :user => { :id => @user.id } ])
+    end
     render 'admin_group/list'
   end
 
@@ -30,26 +39,49 @@ CertPublisher::App.controllers :admin_group do
   end
 
   get :show, :map => '/admin/group/:name' do
-    @group = Group.first(:name => params[:name])
+    conds = (@user.admin?) ? {} : { :members => [
+        :role => :manager,
+        :user => { :id => @user.id }
+      ]}
+    conds[:name] = params[:name]
+
+    @group = Group.first(conds) or halt 403
+
     @users = User.all - @group.users
     render 'admin_group/show'
   end
 
   post :add_user, :map => '/admin/group/:name/add/:user_id' do
-    group = Group.first(:name => params[:name])
-    user  = User.get(params[:user_id])
-    group.users << user
-    group.save!
-    content_type "application/json"
-    '{"result":"ok"}'
+    member = Member.new(params[:member])
+    member.user = User.get(params[:user_id])
+
+    conds = (@user.admin?) ? {} : { :members => [
+        :role => :manager,
+        :user => { :id => @user.id }
+      ]}
+    conds[:name] = params[:name]
+    member.group = Group.first(conds) or halt 403
+
+    if member.save
+      content_type "application/json"
+      '{"result":"ok"}'
+    else
+      halt 500
+    end
   end
 
   post :remove_user, :map => '/admin/group/:name/remove/:user_id' do
-    group = Group.first(:name => params[:name])
+    conds = (@user.admin?) ? {} : { :members => [
+        :role => :manager,
+        :user => { :id => @user.id }
+      ]}
+    conds[:name] = params[:name]
+    group = Group.first(conds) or halt 403
+
     user  = User.get(params[:user_id])
     group.users.delete(user)
-    group.save!
+    group.save
     content_type "application/json"
-    '{"result":"ok"}'
+    user.attributes.to_json
   end
 end

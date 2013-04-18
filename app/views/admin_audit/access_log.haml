@@ -1,14 +1,42 @@
-%table.table
-  %tr
-    %th= t('field.access_datetime')
-    %th= t('field.access_username')
-    %th= t('field.access_device')
-    %th= t('field.access_purpose')
-  - @access_logs.each do |access_log|
-    %tr.entry
-      %td= access_log.session_started_at.strftime("%Y/%m/%d %H:%M:%S")
-      %td= access_log.user_name
-      %td= access_log.device_name
-      %td= access_log.purpose
+- content_for :assets do
+  = stylesheet_link_tag 'bootstrap-datetimepicker.min'
+  = javascript_include_tag 'bootstrap-datetimepicker.min', 'd3.v3.min', 'activity'
+%div#activity
+
+= form_tag url(:admin_audit, :access_log, :format => :js), :class => "form-inline", :remote => true, :method => :get do
+  = label_tag :session_started_at, :caption => t('field.access_datetime')
+  %span.input-append.date
+    = text_field_tag :session_started_from, :data => {:format => "yyyy/MM/dd hh:mm:ss"}, :value => Date.today.to_datetime.strftime("%Y/%m/%d %H:%M:%S")
+    %span.add-on
+      %i{:data => {"time-icon" => "icon-time", "date-icon" => "icon-calendar"}, :class => "icon-time"}
+  %span.input-append.date
+    = text_field_tag :session_started_to, :data => {:format => "yyyy/MM/dd hh:mm:ss"}, :value => Date.tomorrow.to_datetime.strftime("%Y/%m/%d %H:%M:%S")
+    %span.add-on
+      %i{:data => {"time-icon" => "icon-time", "date-icon" => "icon-calendar"}, :class => "icon-time"}
+  = submit_tag "Search", :class => "btn btn-primary"
+  
+%table.table.access-logs
+  = partial 'admin_audit/access_log_table'
 
 .pagination= @access_logs.pager.to_html url(:admin_audit, :access_log), :size => 5
+
+:scss
+  svg {
+    font-size: 10px;
+    shape-rendering: crispEdges;
+  }
+  .day {
+    shape-rendering: crispEdges;
+  }
+  text.month {
+    font-size: 10px;
+    fill: #aaa;
+  }
+
+:javascript
+  $(function() {
+    $(":text[name=session_started_from]").parent().datetimepicker({
+      language: 'ja'
+    });
+    draw_activity("#{url(:admin_audit, :access_activity, :format => 'json')}");
+  });

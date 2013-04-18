@@ -9,3 +9,4 @@ db/*.db
 config/settings.yml
 Gemfile.lock
 *.pem
+wget-log

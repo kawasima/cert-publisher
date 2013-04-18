@@ -1,12 +1,11 @@
 %h1 List of Groups
-- if flash[:notice]
-  .alert.alert-success= flash[:notice]
 
-- if flash[:error]
-  .alert.alert-error= flash[:error]
+= flash_tag :notice, :class => "alert alert-success"
+= flash_tag :error,  :class => "alert alert-error"
 
-%p.pull-right
-  = link_to t('button.new_group'), url(:admin_group, :new), :class => "btn btn-primary"
+-if @user.admin? 
+  %p.pull-right
+    = link_to t('button.new_group'), url(:admin_group, :new), :class => "btn btn-primary"
 
 %table.table
   %tr

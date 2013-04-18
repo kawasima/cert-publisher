@@ -78,12 +78,15 @@ module CertPublisher
     ##
     # You can manage errors like:
     #
-    error 404 do
-      render 'errors/404'
-    end
 
     error 401 do
       render 'errors/401'
+    end
+    error 403 do
+      render 'errors/403'
+    end
+    error 404 do
+      render 'errors/404'
     end
   end
 end

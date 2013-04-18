@@ -1,0 +1,20 @@
+%h1 List of Inquiry
+
+= flash_tag :notice, :class => "alert alert-success"
+= flash_tag :error,  :class => "alert alert-error"
+
+%table.table
+  %tr
+    %th.span3= t('field.inquiry_at')
+    %th.span3= t('field.common_name')
+    %th.span6= t('field.inquiry_description')
+    - @inquiries.each do |inquiry|
+      %tr.entry
+        %td
+          = link_to l(inquiry.inquiry_at), url(:inquiry, :update, :id => inquiry.id)
+        %td
+          - if inquiry.inquiry_by
+            = link_to inquiry.inquiry_by.common_name, url(:inquiry, :update, :id => inquiry.id)
+        %td= inquiry.description
+
+        

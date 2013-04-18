@@ -5,6 +5,8 @@
     %title Cert Publisher
     = stylesheet_link_tag 'bootstrap', 'application', 'select2', 'elusive-webfont'
     = javascript_include_tag 'jquery', 'jquery-ujs', 'bootstrap', 'select2.min'
+    - if content_for? :assets
+      = yield_content :assets
     :javascript
       $.ajaxSetup({headers: {'X-CSRF-TOKEN': '#{session[:csrf]}'}});
   %body{ :style => 'padding-top: 90px;' }
@@ -16,8 +18,23 @@
             Cert Publisher
           .nav-collapse.collapse
             %ul.nav.nav-pills.pull-right
+              - if @user
+                %li.dropdown
+                  %a{:href => "#", :title => "Settings", :data => {:toggle => "dropdown"}}
+                    %i.icon-cogs
+                    Settings
+                  %ul.dropdown-menu
+                    %li
+                      = link_to url(:user, :secret) do
+                        %i.icon-key
+                        Secret question
+                    - if @user.members(:role => :manager).count > 0
+                      %li
+                        = link_to url(:admin_group, :index) do
+                          %i.icon-group
+                          My group
               - if @user && @user.admin?
-                %li.drop_down
+                %li.dropdown
                   %a{:href => "#", :title => "Admin", :data => {:toggle => "dropdown"}}
                     %i.icon-cogs
                     Admin
@@ -37,6 +54,15 @@
                       = link_to url(:admin_audit, :access_log) do
                         %i.icon-eye-open
                         Audit
+                    %li
+                      = link_to url(:inquiry, :index) do
+                        %i.icon-question
+                        Inquiry
+              - if @user
+                %li
+                  = link_to url(:inquiry, :new) do
+                    %i.icon-question
+                    Inquiry
     .container
       =yield
 

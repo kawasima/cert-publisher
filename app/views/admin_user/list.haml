@@ -35,7 +35,11 @@
   - @users.each do |user|
     %tr.entry
       %td
-        = link_to "#{user.common_name} (#{user.email_address})", url(:user, :show, :token => user.cert.token)
+        = link_to url(:user, :show, :token => user.cert.token) do
+          = gravatar_tag user.email_address, :size => 30
+          #{user.common_name} (#{user.email_address})
+          - if user.account_lock
+            %span.label= t('message.locking')
       %td
         - if user.user_devices.count > 0
           %ul
@@ -53,6 +57,18 @@
                  :"data-toggle" => "modal",
                  :"data-url" => url(:admin_user, :sendmail, :id => user.id) }
                 = t('button.sendmail')
+            %li.divider
+            %li
+              - if user.account_lock
+                %a{:href => "#dialog-confirm",
+                   :"data-toggle" => "modal",
+                   :"data-url" => url(:admin_user, :unlock, :id => user.id)}
+                  = t('button.unlock')
+              - else
+                %a{:href => "#dialog-confirm",
+                   :"data-toggle" => "modal",
+                   :"data-url" => url(:admin_user, :lock, :id => user.id)}
+                  = t('button.lock')
             %li
               %a{:href => "#dialog-confirm",
                  :"data-toggle" => "modal",
@@ -75,7 +91,7 @@
 #dialog-confirm.modal.hide
   = form_tag "" do
     .modal-body
-      %p= t('message.confirm_action')
+      %p.confirm-action= t('message.confirm_action')
       %p#ca-password-div
         %label{:for => "ca-passwd"}= t('field.ca_password')
         %input#ca-passwd{:type => "password", :name => "ca_password"}
@@ -94,7 +110,9 @@
         $("#dialog-confirm #ca-password-div").hide();
       }
       $("#dialog-confirm form").attr("action", $(this).attr("data-url"));
-      $("#dialog-confirm #action-name").html($(this).html());
+      var msg = $("#dialog-confirm p.confirm-action").text()
+        .replace("${action-name}", $(this).text());
+      $("#dialog-confirm p.confirm-action").text(msg);
     });
 
     $("#dialog-confirm #button-cancel").click(function() {

@@ -1,0 +1,9 @@
+%div.well= t('message.update_inquiry')
+
+= flash_tag :error, :class => "alert alert-error"
+
+= form_for :inquiry, url(:inquiry, :update, :id => @inquiry.id), :class => "form-horizontal" do |f|
+  = field_set_tag do
+    %pre= @inquiry.description
+  %div.form-actions
+    = f.submit t('button.register'), :class => "btn btn-primary"

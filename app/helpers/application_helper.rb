@@ -13,6 +13,13 @@ CertPublisher::App.helpers do
     block_is_template?(block) ? concat_content(output) : output
   end
 
+  def gravatar_tag(email_address, options = {})
+    size = options.delete(:size) or 40
+    hash = Digest::MD5.hexdigest email_address
+    url = "//www.gravatar.com/avatar/#{hash}?s=#{size}&d=mm"
+    image_tag url
+  end
+
   private
   def build_object(object_or_symbol)
     object_or_symbol.is_a?(Symbol) ? self.instance_variable_get("@#{object_or_symbol}") : object_or_symbol

@@ -26,6 +26,12 @@ ja:
     access_log: アクセス履歴
     request_otp: ワンタイムパスワード
     unlock_code: ロック解除
+    operated_at: 操作日時
+    operated_by: 操作者
+    url: URL
+    data: データ
+    admin: 管理者
+    inquiry_description: 問合せ内容
   button:
     register: 登録
     add: 追加
@@ -34,8 +40,10 @@ ja:
     new_group: 新規グループ
     sendmail: URL通知
     delete: 削除
-    extension: 延長
+    extend: 延長
     revoke: 失効
+    lock: ロック
+    unlock: ロック解除
     download: ダウンロード
     access_log: アクセス履歴
     admin_group: グループ
@@ -43,8 +51,6 @@ ja:
     cancel:  いいえ
     request_certification: 証明書申請
     request_otp: ワンタイムパスワード
-    lock: ロック
-    unlock: ロック解除
   message:
     tagline: Cert Publisherは強力で堅牢な認証のしくみです。
     updated: 更新しました。
@@ -54,8 +60,9 @@ ja:
     extended: 有効期限を延長しました。
     revoked: 証明書を失効しました。
     pkcs12_password: このパスワードを使って、ブラウザに証明書をインストールしてください。
-    confirm_action: 本当に<span id="action-name"></span>しますか?
+    confirm_action: 本当に${action-name}しますか?
     new_user: 発行するメールアドレスを入力してください。
+    show_user: 証明書をダウンロードできます
     sentmail: 通知メールを送信しました。
     secret_question_hint: 他人には話したことがない質問を登録してください。
     secret_question_guide: あなたの設定を変更するための秘密の質問を設定できます。
@@ -73,3 +80,8 @@ ja:
     request_otp: One-time password
     request_otp_guide: If you click this button, you can get OTP.
     duplicated_uid: ユーザIDは既に登録されています。
+    new_inquiry: 管理者への質問はこちらからお願いします。
+    request_certification_guide: 証明書の発行申請ができます。
+    unlock_guide: ロックしたアカウントを解除できます。
+    confirm_lock: 本当にロックしますか?
+    locking: ロック中

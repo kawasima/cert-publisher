@@ -16,7 +16,7 @@
           %h4= t('button.request_otp')
           %p Get one time password.
       %li#lock-account{:style => "display:inline-block"}
-        - form_tag url(:account_lock, :create), :class => "form-inline" do
+        - form_tag url(:account_lock, :create), :class => "form-inline", :confirm => t('message.confirm_lock') do
           %div.icon
             %i.icon-lock
           %div.data

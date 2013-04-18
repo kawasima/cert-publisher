@@ -1,0 +1,11 @@
+%tr
+  %th= t('field.access_datetime')
+  %th= t('field.access_username')
+  %th= t('field.access_device')
+  %th= t('field.access_purpose')
+- @access_logs.each do |access_log|
+  %tr.entry
+    %td= access_log.session_started_at.strftime("%Y/%m/%d %H:%M:%S")
+    %td= access_log.user_name
+    %td= access_log.device_name
+    %td= access_log.purpose

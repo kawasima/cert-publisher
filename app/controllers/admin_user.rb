@@ -62,6 +62,26 @@ CertPublisher::App.controllers :admin_user do
     redirect url(:admin_user, :index)
   end
 
+  post :lock, '/admin/user/:id/lock' do
+    user = User.get(params[:id]) or halt 404
+    user.account_lock = AccountLock.new(
+      :unlock_code => SecureRandom.hex(16),
+      :reason => :admin
+    )
+    if user.save
+      flash[:notice] = t('message.updated')
+    else
+      flash[:error] = t('message.failed_to_update')
+    end
+    redirect url(:admin_user, :index)
+  end
+
+  post :unlock, '/admin/user/:id/unlock' do
+    user = User.get(params[:id]) or halt 404
+    user.account_lock.destroy
+    redirect url(:admin_user, :index)
+  end
+
   post :extend, '/admin/user/:id/extend' do
     user = User.get(params[:id])
     old_cert = user.cert
@@ -76,7 +96,6 @@ CertPublisher::App.controllers :admin_user do
     client_cert.sign(ca_key, "sha1")
     new_cert.client_cert = client_cert.to_pem
 
-    puts "#{old_cert.inspect}///#{new_cert.inspect}"
     if old_cert.save && new_cert.save
       flash[:notice] = t('message.updated')
     else

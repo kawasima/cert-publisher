@@ -34,23 +34,26 @@
           = t('button.add')
           
 :javascript
-  $.ajaxSetup({headers: {'X-CSRF-TOKEN': '#{session[:csrf]}'}});
-
   $("select[name=new_user_role]").select2();
   $("#new-users").select2({
     placeholder: "Select a user"
   });
   $("#add-btn").click(function() {
     var option = $("#new-users option:selected");
-    var el = $('<tr><td>#{image_tag("select2-spinner.gif")}"></td><td></td></tr>');
+    var el = $('<tr><td>#{image_tag("select2-spinner.gif")}></td><td/><td/></tr>');
     $("#new-users").parents("tr:first").before(el);
+    var role = $("select[name=new_user_role]").val();
+    var user_id = option.attr("value");
     $.ajax({
       type: 'post',
-      url:  '#{url(:admin_group, :add_user, :name => @group.name, :user_id =>"")}' + option.attr("value"),
+      url:  '#{url(:admin_group, :add_user, :name => @group.name, :user_id =>"")}' + user_id,
+      data: {'member[role]': role},
       success: function(data) {
+        $("#new-users option[value=" + user_id + "]").remove();
         $("#members-count").text(Number($("#members-count").text()) + 1);
         $("td:eq(0)", el).html(option.text());
-        $("td:eq(1)", el).html('<button class="btn btn-danger remove-btn" data-user-id="' +
+        $("td:eq(1)", el).html(role);
+        $("td:eq(2)", el).html('<button class="btn btn-danger btn-small remove-btn" data-user-id="' +
                                option.attr('value') +
                                '">#{t('button.remove')}</button>');
       },
@@ -67,6 +70,7 @@
       success: function(data) {
         button.parents("tr:first").remove();
         $("#members-count").text(Number($("#members-count").text()) - 1);
+        $("select#new-users").append($("<option/>").val(data.id).text(data.common_name))
       }
     });
   });

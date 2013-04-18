@@ -37,24 +37,39 @@ CertPublisher::App.controllers :user do
 
     pkcs12 = PKCS12.create(params[:pkcs12_password],
                            @user.email_address, pkey, cert, [ca_cert])
-    content_type "application/x-pkcs12"
-    attachment "#{@user.email_address}-cert.p12"
-    pkcs12.to_der
+
+    @user.cert.token = rand(36**20).to_s(36)
+    if @user.cert.save
+      OperationLog.create(
+        :user_id => @user.id, :user_name => @user.common_name,
+        :url => '/download/#{params[:token]}')
+
+      content_type "application/x-pkcs12"
+      attachment "#{@user.email_address}-cert.p12"
+      pkcs12.to_der
+    end
   end
 
   get :secret, :map => '/user/secret' do
     @secret = @user.secret || Secret.new
+    @secret.answer = ""
     render 'user/secret'
   end
 
   post :secret, :map => '/user/secret' do
     @secret = @user.secret || Secret.new(:user => @user)
     @secret.attributes = params[:secret]
+    hmac = OpenSSL::HMAC.new(settings.auth[:key], OpenSSL::Digest::SHA1.new)
+    @secret.answer = hmac.update(@secret.answer)
 
     if @secret.save
+      OperationLog.create(
+        :user_id => @user.id, :user_name => @user.common_name,
+        :url => '/user/secret')
       flash[:notice] = t('message.updated')
       redirect url(:user, :index)
     else
+      @secret.answer = ""
       flash[:error] = t('message.failed_to_update')
       render 'user/secret'
     end

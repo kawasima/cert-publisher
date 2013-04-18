@@ -1,0 +1,10 @@
+%div.well= t('message.new_inquiry')
+
+= flash_tag :error, :class => "alert alert-error"
+
+= form_for :inquiry, url(:inquiry, :new), :class => "form-horizontal" do |f|
+  = field_set_tag do
+    = f.label :description, :caption => t('field.inquiry_description')
+    = f.text_area :description, :rows => 15, :class => "input-xxlarge"
+  %div.form-actions
+    = f.submit t('button.register'), :class => "btn btn-primary"
