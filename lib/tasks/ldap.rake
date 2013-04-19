@@ -5,7 +5,7 @@ namespace :cert_publisher do
     class SQLOperation < LDAP::Server::Operation
       BASE_DN = "dc=cert-publisher"
       DN_ELEMENTS = {
-        "uid"=> :uid,
+        "UID"=> :uid,
         "CN" => :common_name,
         "OU" => :organization_unit_name,
         "O"  => :organization_name,
@@ -62,6 +62,13 @@ namespace :cert_publisher do
                          :listen  => 10,
                          :operation_class => SQLOperation)
     s.run_tcpserver
+    stop_proc = Proc.new do
+      puts "Stop LDAP server..."
+      s.stop
+      Process.kill
+    end
+    Signal.trap(:INT,  stop_proc)
+    Signal.trap(:TERM, stop_proc)
     s.join
   end
 end 

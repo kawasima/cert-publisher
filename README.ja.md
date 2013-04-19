@@ -90,8 +90,7 @@ CertPublisherは、ApacheのFakeBasicAuth機能と連携するので、この設
         AuthType Basic
         AuthName "Your Realm"
         AuthBasicProvider dbd
-		AuthDBDUserPWQuery "SELECT '$apr1$E8MmZwFZ$k3gNG2FSX7TQodKLeRwoA0' FROM users WHERE dn=%s"
-        AuthzDBDQuery "SELECT G.name AS `group` FROM users AS U JOIN group_users AS GU ON GU.user_id=U.id JOIN groups AS G ON GU.group_id=G.id WHERE U.dn=%s"
+		AuthDBDUserPWQuery "SELECT 'xxj31ZMTZzkVA' FROM users WHERE dn=%s"
     </Location>
 
 DBDxxxの設定項目は、Apacheからデータベース接続するための設定です。Cert Publisherで管理されているユーザ、グループの情報を参照し認証・認可を行います。
@@ -121,3 +120,61 @@ cert-publisherデータベースを作り、migrateでテーブルを作って�
 
     % mysqladmin -u root -p create cert-publisher
     % padrino rake dm:auto:migrate
+
+### 端末認証のセットアップ
+
+端末ごとに認証コードを発行し、保護領域にアクセスするときにその事由を入力させるようにするためには、mod_device_trace モジュールが必要です。
+
+    % git clone https://github.com/kawasima/mod_device_trace.git
+	% cd mod_device_trace
+	% make
+	% sudo make install
+
+そしてApacheのconfigでモジュールをロードしてください。
+
+    LoadModule dir_module /usr/lib/apache2/modules/mod_device_trace.so
+
+保護領域の設定は以下のようにします。
+
+    <Location /secret>
+        SSLRequire %{SSL_CLIENT_VERIFY} eq "SUCCESS"
+        DeviceTrace On
+        DeviceTraceSetTokenUrl     https://domain/cert-publisher/user/
+        DeviceTraceStartSessionUrl https://domain/cert-publisher/user/start_session
+        Require valid-user
+    </Location>
+
+### 認可の設定
+
+これはCert Publisherの機能ではありませんが、Cert Publisherで管理されたグループを使って認可する設定の方法です。
+
+mod_authz_dbdが必要です。Apache2.4からは標準モジュールに入っていますが、2.2では付属していないので、自分でビルドしてください。
+
+http://people.apache.org/~niq/dbd.html
+
+モジュールインストールし有効にしたら、以下の設定をコンフィグに書き加えてください。
+
+    AuthzDBDQuery "SELECT G.name AS `group` FROM users AS U JOIN group_users AS GU ON GU.user_id=U.id JOIN groups AS G ON GU.group_id=G.id WHERE U.dn=%s"
+
+Cert Publisherでグループ作り(ここでは例としてmygroupを作ったとする)、保護領域に、以下のような設定を加えると、mygroupに属しているもののみアクセスできるようになります。
+
+    Require dbd-group mygroup
+
+利用方法
+-----------
+
+### Cert Publisher管理のユーザをLDAPで検索する
+
+Cert Publisherで保護された領域にredmineやjenkinsなど、既成のアプリケーションをおきたい場合があります。この場合、Cert Publisherの登録内容をldapインタフェースで提供することができるので、既成アプリケーションの認証方式をLDAPに設定すると連携が可能になります。
+
+Cert Publisherではパスワードという概念は存在しないので、LDAP認証のためにワンタイムパスワードを自動発行する機能があります。
+ユーザはクライアント認証でダッシュボードを開き、ワンタイムパスワードを取得します。ここで取得したパスワードを元に、redmineやjenkinsにログインすることができます。
+
+LDAPによるシングルサインオンは、パスワードが漏れると全部のサービスにアクセスされてしまう危険性がありますが、このCertPulisherのワンタイムパスワードLDAPを使えば、LDAPの利便性を保ちつつその危険性を最小限にすることができます。
+
+LDAPサーバを立ち上げるには、以下のコマンドを実行してください。
+
+    % padrino rake cert_publisher:ldap
+
+ポート番号は1389で起動します。ユーザのディレクトリは、ou=users,dc=cert-publisher になるので、これをBASE DNに設定してください。
+
