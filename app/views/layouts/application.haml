@@ -38,6 +38,9 @@
                   %a{:href => "#", :title => "Admin", :data => {:toggle => "dropdown"}}
                     %i.icon-cogs
                     Admin
+                    - if RequestCert.count + RequestExtension.count > 0
+                      %span.badge.badge-important
+                        = RequestCert.count + RequestExtension.count
                   %ul.dropdown-menu
                     %li
                       = link_to url(:admin_user, :index) do
@@ -58,6 +61,13 @@
                       = link_to url(:inquiry, :index) do
                         %i.icon-question
                         Inquiry
+                    - if RequestExtension.count > 0
+                      %li
+                        = link_to url(:admin_user, :list_extension) do
+                          %i.icon-resize-horizontal
+                          Expires
+                          %span.badge.badge-important
+                            = RequestExtension.count
               - if @user
                 %li
                   = link_to url(:inquiry, :new) do

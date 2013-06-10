@@ -1,6 +1,11 @@
 = flash_tag :notice, :class => "alert alert-success"
 = flash_tag :error,  :class => "alert alert-error"
 
+- if @user.cert.expires - Date.today < 366 and @user.request_extension.nil?
+  %div.alert.alert-warn
+    - form_tag url(:user, :extend), :method => :post, :class => "form-inline" do
+      Your certification will expire shortly. Do you request to extend the expiration?
+      = submit_tag 'Yes', :class => "btn"
 %div.alert.alert-info
   %h3.alert-heading
     = t('message.hello', :name => @user.common_name)
@@ -29,6 +34,7 @@
       %h3
         %i.icon-user
         = t('field.certification')
+        = link_to t('button.download'), url(:user, :show, :token => @user.cert.token), :class => "btn btn-mini btn-success pull-right"
     %table.table.table-condensed
       %tr
         %th= t('field.country_name')
@@ -53,7 +59,10 @@
         %td= @user.email_address
       %tr
         %th= t('field.expires')
-        %td= l(@user.cert.expires)
+        %td
+          = l(@user.cert.expires)
+          - if @user.request_extension
+            %span.label.label-important= t('message.requested_to_extend')
 
   %div.span8
     %div.page-header
@@ -61,8 +70,7 @@
         %i.icon-time
         = t('field.access_log')
     - if @user.access_logs.count > 0
-      %div.alert
-        %span.small= t('message.alert_sign_of_forced_entry')
+      %div.small= t('message.alert_sign_of_forced_entry')
       %table.table.table-condensed
         %tr
           %th= t('field.access_datetime')
@@ -74,15 +82,13 @@
             %td= access_log.device_name
             %td= access_log.purpose
     - else
-      %div.alert.alert-info
-        %span.small= t('message.unregistered')
+      %div.small= t('message.unregistered')
 
     %div.page-header
       %h3
         %i.icon-hdd
         = t('message.list_of_devices')
-    %div.alert
-      %span.small= t('message.delete_unneeded_devices')
+    %div.small= t('message.delete_unneeded_devices')
     %ul
       - @user.user_devices.each do |device|
         %li

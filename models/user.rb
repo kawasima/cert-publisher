@@ -24,6 +24,7 @@ class User
   has 1, :account_lock, :constraint => :destroy
   belongs_to :cert, :parent_key => [ :serial ], :required => false
 
+  has 1, :request_extension, :constraint => :destroy
   has n, :members
   has n, :groups, :through => :members
 end

@@ -51,12 +51,17 @@ ja:
     cancel:  いいえ
     request_certification: 証明書申請
     request_otp: ワンタイムパスワード
+    inquiry_description: 内容
+    accept: 承諾
+    decline: 拒否
   message:
     tagline: Cert Publisherは強力で堅牢な認証のしくみです。
     updated: 更新しました。
     deleted: 削除しました。
+    registered: 登録しました。
     failed_to_delete: 削除に失敗しました。
     failed_to_update: 更新に失敗しました。
+    failed_to_register: 登録に失敗しました。
     extended: 有効期限を延長しました。
     revoked: 証明書を失効しました。
     pkcs12_password: このパスワードを使って、ブラウザに証明書をインストールしてください。
@@ -85,3 +90,5 @@ ja:
     unlock_guide: ロックしたアカウントを解除できます。
     confirm_lock: 本当にロックしますか?
     locking: ロック中
+    requested_to_extend: 延長申請済み
+

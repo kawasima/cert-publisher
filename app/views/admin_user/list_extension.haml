@@ -1,0 +1,53 @@
+= flash_tag :notice, :class => "alert alert-success"
+= flash_tag :error,  :class => "alert alert-error"
+
+- unless @request_extensions.empty?
+  %div.page-header
+    %h3
+      %i.icon-resize-horizontal
+      List of certification requests.
+
+  = form_tag url(:admin_user, :accept_extension), :method => 'post', :id => "form-extend" do
+    = hidden_field_tag :ca_password, :value => ""
+    %table.table
+      %tr
+        %th
+        %th= t('field.common_name')
+        %th= t('field.expires')
+        - @request_extensions.each do |request_extension|
+          %tr.entry
+            %td= check_box_tag 'request_extension_ids[]', :value => request_extension.id
+            %td= "#{request_extension.user.common_name} (#{request_extension.user.email_address})"
+            %td= l(request_extension.user.cert.expires)
+    = submit_tag t('field.accept'), :class => "btn btn-success", :id => "btn-extend"
+
+#dialog-confirm.modal.hide
+  .modal-body
+    %p#ca-password-div
+      %label{:for => "ca-passwd"}= t('field.ca_password')
+      %input#ca-passwd{:type => "password", :name => "ca_password"}
+  .modal-footer
+    %button#button-ok.btn.btn-danger= t('button.ok')
+    %button#button-cancel.btn= t('button.cancel')
+
+:javascript
+  $(function() {
+    $("#dialog-confirm").modal({show: false});
+
+    $("#dialog-confirm #button-cancel").click(function() {
+      $("#dialog-confirm").modal('hide');
+      return false;
+    });
+    $("#dialog-confirm #button-ok").click(function() {
+      $("#form-extend :input[name=ca_password]").val(
+        $("#dialog-confirm input[name=ca_password]").val());
+      $("#form-extend").submit();
+      $("#dialog-confirm").modal('hide');
+      return false;
+    });
+    $("#btn-extend").click(function() {
+      $("#dialog-confirm").modal('show');
+      return false;
+    });
+  });
+

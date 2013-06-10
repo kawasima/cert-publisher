@@ -87,7 +87,6 @@ CertPublisher::App.controllers :user do
 
     hmac = OpenSSL::HMAC.new(settings.auth[:key], OpenSSL::Digest::SHA1.new)
     answer = hmac.update(params[:answer]).to_s
-logger.error("#{params[:answer]}/#{answer}/#{@user.secret.answer}/#{@user.secret.answer!=answer}")
     if @user.secret.answer != answer
       flash[:error] = t('message.mismatch_secret')
       render 'user/add_device'
@@ -145,6 +144,16 @@ logger.error("#{params[:answer]}/#{answer}/#{@user.secret.answer}/#{@user.secret
       flash[:error] = t('message.failed_to_update')
       render 'user/start_session'
     end
+  end
+
+  post :extend, :map => '/user/extend/request' do
+    request_extension = RequestExtension.new(:user => @user)
+    if request_extension.save
+      flash[:notice] = t('message.updated')
+    else
+      flash[:notice] = t('message.failed_to_update')
+    end
+    redirect url(:user, :index)
   end
 
   define_method :generate_device_session do |device_token|

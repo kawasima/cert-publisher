@@ -51,6 +51,8 @@ en:
     request_certification: Request certification
     request_otp: One-time password
     inquiry_description: Description
+    accept: Accept
+    decline: Decline
   message:
     tagline: Cert Publisher is a powerful, robust authentication and authorized system.
     registered: Registered successfully.
@@ -58,6 +60,7 @@ en:
     deleted: Deleted successfully.
     failed_to_delete: Faild to delete.
     failed_to_update: Failed to update.
+    failed_to_register: Failed to register.
     extended: The expires of certification has been extended.
     revoked: The certification has been revoked.
     accepted_request: Accepted your request. Wait a second!
@@ -87,4 +90,4 @@ en:
     unlock_guide: Unlock your account.
     confirm_lock: Are you sure?
     locking: Locking
-    
+    requested_to_extend: Requested to extend

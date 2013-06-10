@@ -1,6 +1,6 @@
 ##
 # A MySQL connection:
-DataMapper.setup(:default, 'mysql://cert:cert@localhost/cert-publisher')
+DataMapper.setup(:default, 'mysql://cert:cert@localhost/cert_publisher')
 #
 # # A Postgres connection:
 # DataMapper.setup(:default, 'postgres://user:password@localhost/the_database_name')
