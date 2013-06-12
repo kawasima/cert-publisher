@@ -18,7 +18,7 @@
 %table.table.access-logs
   = partial 'admin_audit/access_log_table'
 
-.pagination= @access_logs.pager.to_html url(:admin_audit, :access_log), :size => 5
+.pagination!= @access_logs.pager.to_html url(:admin_audit, :access_log), :size => 5
 
 :scss
   svg {

@@ -17,7 +17,7 @@ gem 'highline'
 
 # Component requirements
 gem 'sass'
-gem 'haml'
+gem 'haml', '4.0.3'
 gem 'dm-mysql-adapter'
 gem 'dm-pager'
 gem 'dm-validations'
@@ -34,7 +34,7 @@ gem 'rspec', :group => 'test'
 gem 'rack-test', :require => 'rack/test', :group => 'test'
 
 # Padrino Stable Gem
-gem 'padrino', '0.11.0'
+gem 'padrino', '0.11.2'
 
 # Or Padrino Edge
 # gem 'padrino', :github => 'padrino/padrino-framework'

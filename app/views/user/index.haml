@@ -1,7 +1,7 @@
 = flash_tag :notice, :class => "alert alert-success"
 = flash_tag :error,  :class => "alert alert-error"
 
-- if @user.cert.expires - Date.today < 366 and @user.request_extension.nil?
+- if @user.cert.expires - Date.today < 30 and @user.request_extension.nil?
   %div.alert.alert-warn
     - form_tag url(:user, :extend), :method => :post, :class => "form-inline" do
       Your certification will expire shortly. Do you request to extend the expiration?

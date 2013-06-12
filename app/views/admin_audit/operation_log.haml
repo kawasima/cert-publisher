@@ -11,4 +11,4 @@
       %td= operation_log.url
       %td= operation_log.data
 
-.pagination= @operation_logs.pager.to_html url(:admin_audit, :operation_log), :size => 5
+.pagination!= @operation_logs.pager.to_html url(:admin_audit, :operation_log), :size => 5

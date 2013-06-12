@@ -8,8 +8,10 @@ module CertPublisher
               @user = User.first
             end
 
+$stderr.puts env['HTTP_AUTHORIZATION']
             if env.include? 'HTTP_AUTHORIZATION'
               dn,password = Base64.decode64(env['HTTP_AUTHORIZATION'][5..-1]).split(":")
+$stderr.puts dn
               dn.split("/").each do |token|
                 name, value = token.split("=")
                 if name == "emailAddress"
@@ -23,13 +25,12 @@ module CertPublisher
 
           define_method :generate_cert do
             pkey = PKey::RSA.generate(CertificateBuilder::KEY_SIZE)
-            x509_cert = CertificateBuilder.new(@user)
-              .ca(:cert => settings.ca[:cert],
+            x509_cert = CertificateBuilder.new(@user).ca(
+              :cert => settings.ca[:cert],
               :key => settings.ca[:key],
-              :password => params[:ca_password])
-              .serial(CertSerial.nextval)
-              .private_key(pkey)
-              .build
+              :password => params[:ca_password]
+            ).serial(CertSerial.nextval).private_key(pkey).build
+
             @user.dn = "/C=#{@user.country_name}/ST=#{@user.province_name}/L=#{@user.locality_name}" <<
       "/O=#{@user.organization_name}/OU=#{@user.organization_unit_name}" <<
       "/CN=#{@user.common_name}/emailAddress=#{@user.email_address}"

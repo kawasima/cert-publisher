@@ -86,7 +86,7 @@
                  :"data-url" => url(:admin_user, :revoke, :id => user.id) }
                 = t('button.revoke')
 
-.pagination= @users.pager.to_html url(:admin_user, :index), :size => 5
+.pagination!= @users.pager.to_html url(:admin_user, :index), :size => 5
 
 #dialog-confirm.modal.hide
   = form_tag "" do
