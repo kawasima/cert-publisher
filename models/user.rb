@@ -2,7 +2,7 @@ class User
   include DataMapper::Resource
 
   property :id, Serial  
-  property :uid, String, :length => 16, :required => true, :unique => true, :format => /[A-Za-z0-9\.\+_]+/
+  property :uid, String, :length => 50, :required => true, :unique => true, :format => /[A-Za-z0-9\.\+_]+/
 
   # Required by SSL certificate
   property :country_name, String, :required => true

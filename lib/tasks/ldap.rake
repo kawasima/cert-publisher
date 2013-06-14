@@ -2,6 +2,7 @@ namespace :cert_publisher do
 
   desc "start ldap server"
   task :ldap => :environment do
+    Process.daemon
     class SQLOperation < LDAP::Server::Operation
       BASE_DN = "dc=cert-publisher"
       DN_ELEMENTS = {
@@ -57,6 +58,7 @@ namespace :cert_publisher do
         end
       end
     end
+
     s = LDAP::Server.new(:port    => 1389,
                          :nodelay => true,
                          :listen  => 10,

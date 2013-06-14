@@ -2,7 +2,7 @@ class RequestCert
   include DataMapper::Resource
 
   property :id, Serial  
-  property :uid, String, :length => 16, :required => true, :format => /[A-Za-z0-9\.\+_]+/
+  property :uid, String, :length => 50, :required => true, :format => /[A-Za-z0-9\.\+_]+/
   property :country_name, String, :required => true
   property :province_name, String, :required => true
   property :locality_name, String

@@ -156,13 +156,11 @@ CertPublisher::App.controllers :admin_user do
 
   post :sendmail, :map => '/admin/user/:id/sendmail' do
     @user = User.get(params[:id])
-    email do
-      from settings.site[:admin]["email_address"]
-      to @user.email_address
-      subject "[#{settings.site[:name]}] Your certification"
-      body render('admin_user/cert_notify')
-      via :sendmail   
-    end
+    email(:from => settings.site[:admin]["email_address"],
+        :to => @user.email_address,
+        :subject => "[#{settings.site[:name]}] Your certification",
+        :body => render('mailers/cert_notify'),
+        :via => :sendmail)
     flash[:notice] = t('message.sentmail')
     redirect url(:admin_user, :index)
   end
