@@ -11,7 +11,6 @@ class RequestCert
   property :common_name, String, :required => true
   property :email_address, String, :required => true
 
-  belongs_to :requested_by, 'User', :required => true
   property :requested_at, DateTime, :default => lambda {|r,p| Time.now }
 
   validates_with_block :uid do

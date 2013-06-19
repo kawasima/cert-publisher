@@ -6,10 +6,10 @@ CertPublisher::App.controllers :request_cert do
 
   post :new, :map => '/request_cert/new' do
     if User.count == 0
-      session[:request_cert] = User.new(params[:user])
+      session[:request_cert] = RequestCert.new(params[:request_cert])
       render 'request_cert/beginning'
     else
-      @request_cert = RequestCert.new(params[:user])
+      @request_cert = RequestCert.new(params[:request_cert])
       if @request_cert.save
         flash[:notice] = t('message.accepted_request')
         redirect url(:public, :index)
@@ -36,8 +36,9 @@ CertPublisher::App.controllers :request_cert do
     end
   end
 
-  get :destroy, :map => 'request_cert/destroy/:id' do
-    if RequestCert.destroy(id)
+  post :destroy, :map => 'request_cert/destroy/:id' do
+    request_cert = RequestCert.get(params[:id])
+    if request_cert && request_cert.destroy
       render 'request_cert/destroy'
     else
       flash[:notice] = t('message.fail_to_update')

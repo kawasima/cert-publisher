@@ -17,7 +17,7 @@
           = "#{request_cert.common_name} (#{request_cert.email_address})"
         %td
           = link_to "Accept", url(:admin_user, :accept, :request_cert_id => request_cert.id, :authenticity_token => session[:csrf]), :class => "btn btn-primary btn-small", :method => :post
-          = link_to "Decline", url(:request_cert, :destroy, :id => request_cert.id), :class => "btn btn-danger btn-small"
+          = link_to "Decline", url(:request_cert, :destroy, :id => request_cert.id, :authenticity_token => session[:csrf]), :class => "btn btn-danger btn-small", :method => :post
           
 %div.page-header
   %h3
