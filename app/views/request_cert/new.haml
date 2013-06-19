@@ -6,7 +6,7 @@
 - if flash[:error]
   .alert.alert-error= flash[:error]
 
-= form_for :user, url(:request_cert, :new), :class => "form-horizontal" do |f|
+= form_for :request_cert, url(:request_cert, :new), :class => "form-horizontal" do |f|
   = field_set_tag do
     = partial 'admin_user/form', :locals => {:f => f, :user => @request_cert }
   %div.form-actions

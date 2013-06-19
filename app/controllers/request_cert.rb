@@ -1,6 +1,6 @@
 CertPublisher::App.controllers :request_cert do
   get :new, :map => '/request_cert/new' do
-    @request_cert = RequestCert.new
+    @request_cert = RequestCert.new(settings.entry)
     render 'request_cert/new'
   end
 

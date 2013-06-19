@@ -49,7 +49,7 @@
 :javascript
   $(function() {
     function generate_password(len) {
-      var chars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_-=+;:'.,<>/~";
+      var chars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^*()_-=+;:.,/~";
       var passwd = "";
       for(var i=0; i< len; i++) {
         passwd += chars[Math.floor(Math.random() * chars.length)];
