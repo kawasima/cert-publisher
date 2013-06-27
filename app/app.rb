@@ -25,7 +25,9 @@ module CertPublisher
 
     before do
       locales = parse_http(request.env['HTTP_ACCEPT_LANGUAGE'])
-      I18n.locale = locales[0] unless locales.empty?
+      if !locales.empty? && I18n.available_locales.include?(locales[0].to_sym)
+        I18n.locale = locales[0]
+      end
     end
 
     ##

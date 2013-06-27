@@ -18,6 +18,7 @@ Bundler.require(:default, PADRINO_ENV)
 # ## Configure your I18n
 #
 I18n.default_locale = :en
+I18n.available_locales = [:en, :ja]
 #
 # ## Configure your HTML5 data helpers
 #
